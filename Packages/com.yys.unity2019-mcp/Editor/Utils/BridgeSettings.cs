@@ -8,10 +8,16 @@ namespace Unity2019Mcp.Utils
         private const string AllowScriptWriteKey = "Unity2019Mcp.AllowScriptWrite";
         private const string AllowAssetDeleteKey = "Unity2019Mcp.AllowAssetDelete";
 
-        public static bool AllowDelete
+        public static bool AllowSceneDelete
         {
             get { return EditorPrefs.GetBool(AllowDeleteKey, true); }
             set { EditorPrefs.SetBool(AllowDeleteKey, value); }
+        }
+
+        public static bool AllowDelete
+        {
+            get { return AllowSceneDelete; }
+            set { AllowSceneDelete = value; }
         }
 
         public static bool AllowScriptWrite
@@ -30,7 +36,8 @@ namespace Unity2019Mcp.Utils
         {
             return new
             {
-                allowDelete = AllowDelete,
+                allowSceneDelete = AllowSceneDelete,
+                allowDelete = AllowSceneDelete,
                 allowScriptWrite = AllowScriptWrite,
                 allowAssetDelete = AllowAssetDelete,
                 logPath = BridgeLogger.LogPath

@@ -65,6 +65,11 @@ namespace Unity2019Mcp.Commands
 
         public static object Delete(Dictionary<string, object> parameters)
         {
+            if (!BridgeSettings.AllowAssetDelete)
+            {
+                throw new McpCommandException("OPERATION_BLOCKED", "Asset delete operations are disabled by Unity2019MCP safety settings.", BridgeSettings.ToDto());
+            }
+
             var assetPath = ParamUtil.RequiredString(parameters, "assetPath");
             if (!assetPath.StartsWith("Assets/"))
             {

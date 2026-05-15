@@ -17,7 +17,7 @@
 {}
 ```
 
-预期结果：返回 `allowDelete`、`allowScriptWrite`、`allowAssetDelete` 和 `logPath`。
+预期结果：返回 `allowSceneDelete`、`allowScriptWrite`、`allowAssetDelete` 和 `logPath`。
 
 2. 调用 `unity_bridge_get_log_path`：
 
@@ -36,14 +36,14 @@
 1. 在 Unity 菜单中关闭：
 
 ```text
-Tools > Unity 2019 MCP > Safety > Allow Delete
+Tools > Unity 2019 MCP > Safety > Allow Scene Object Delete
 ```
 
 2. 调用 `unity_gameobject_delete` 删除任意测试对象。
 
 预期结果：返回 `OPERATION_BLOCKED`。
 
-3. 重新打开 `Allow Delete`，再次调用删除。
+3. 重新打开 `Allow Scene Object Delete`，再次调用删除。
 
 预期结果：删除恢复正常。
 
@@ -55,6 +55,8 @@ Tools > Unity 2019 MCP > Safety > Allow Asset Delete
 ```
 
 预期结果：关闭后，`unity_script_create` 和 `unity_asset_delete` 分别返回 `OPERATION_BLOCKED`。
+
+注意：`Allow Asset Delete` 只控制 `unity_asset_delete` 这类项目资源删除，不控制场景 Hierarchy 中的 `unity_gameobject_delete`。场景对象删除由 `Allow Scene Object Delete` 控制。
 
 ## 端口回退与自动探测
 

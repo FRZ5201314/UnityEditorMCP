@@ -11,8 +11,8 @@
 
 ## 当前版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.5.0`
-- MCP Server：`unity2019-mcp-server@0.5.0`
+- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.5.1`
+- MCP Server：`unity2019-mcp-server@0.5.1`
 - Unity 目标版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 

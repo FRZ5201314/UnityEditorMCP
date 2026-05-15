@@ -76,17 +76,17 @@ namespace Unity2019Mcp.Bridge
             Debug.Log("Unity2019MCP bridge stopped.");
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Delete")]
-        public static void ToggleAllowDelete()
+        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Scene Object Delete")]
+        public static void ToggleAllowSceneDelete()
         {
-            BridgeSettings.AllowDelete = !BridgeSettings.AllowDelete;
-            BridgeLogger.Info("allowDelete set to " + BridgeSettings.AllowDelete);
+            BridgeSettings.AllowSceneDelete = !BridgeSettings.AllowSceneDelete;
+            BridgeLogger.Info("allowSceneDelete set to " + BridgeSettings.AllowSceneDelete);
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Delete", true)]
-        public static bool ValidateAllowDelete()
+        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Scene Object Delete", true)]
+        public static bool ValidateAllowSceneDelete()
         {
-            Menu.SetChecked("Tools/Unity 2019 MCP/Safety/Allow Delete", BridgeSettings.AllowDelete);
+            Menu.SetChecked("Tools/Unity 2019 MCP/Safety/Allow Scene Object Delete", BridgeSettings.AllowSceneDelete);
             return true;
         }
 

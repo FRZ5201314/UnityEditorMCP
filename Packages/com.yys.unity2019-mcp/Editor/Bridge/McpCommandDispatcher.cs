@@ -100,9 +100,9 @@ namespace Unity2019Mcp.Bridge
 
         private static string GetBlockedReason(string command)
         {
-            if (!BridgeSettings.AllowDelete && (command == "gameObject.delete" || command == "component.remove"))
+            if (!BridgeSettings.AllowSceneDelete && (command == "gameObject.delete" || command == "component.remove"))
             {
-                return "Delete operations are disabled by Unity2019MCP safety settings.";
+                return "Scene object delete operations are disabled by Unity2019MCP safety settings.";
             }
 
             if (!BridgeSettings.AllowScriptWrite && command == "script.create")

@@ -137,6 +137,7 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 - Bridge 默认监听端口被占用时会尝试 `8765-8775`。
 - MCP Server 默认会自动探测 `127.0.0.1:8765-8775` 上的 Bridge。
 - Bridge 日志写入 `Library/Unity2019Mcp/bridge.log`。
+- `Allow Scene Object Delete` 控制场景对象删除，`Allow Asset Delete` 控制 `Assets/` 下资源删除。
 - 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `unity_script_create` 会在写入脚本后请求 Unity 导入资源并编译脚本。

@@ -1,5 +1,10 @@
 # 更新日志
 
+## 0.5.1
+
+- 将场景对象删除安全开关菜单改名为 `Allow Scene Object Delete`，避免与资源删除开关混淆。
+- 在 `asset.delete` 命令内部增加 `allowAssetDelete` 二次拦截，确保资源删除安全开关生效。
+
 ## 0.5.0
 
 - 新增第五阶段稳定性能力：Bridge 文件日志、启动端口回退和 MCP Server 本地端口自动探测。
