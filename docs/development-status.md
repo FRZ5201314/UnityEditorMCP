@@ -129,9 +129,13 @@ server/
 - Bridge 端口冲突处理。已实现 `8765-8775` 端口回退。
 - MCP Server 自动探测 Bridge。已实现本地端口扫描。
 
-第五阶段已完成代码实现，仍需要在 Unity 2019.4 中执行 `docs/phase5-manual-test.md` 手动验收。
+第五阶段已完成代码实现，并已由用户手动验证正常。
 
 说明：`Bridge Permissions` 只限制 MCP Bridge 暴露的命令入口，不限制 Codex、Shell、Unity UI 或文件系统层面的其他操作路径。
+
+## 阶段完成结论
+
+当前规划的第一至第五阶段均已完成代码实现，并已通过用户手动验收。
 
 ## 常用验证命令
 
