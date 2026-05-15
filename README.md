@@ -13,6 +13,12 @@
 docs/development-status.md
 ```
 
+完整使用说明见：
+
+```text
+docs/mcp-usage-guide.md
+```
+
 ## 项目约定
 
 - 本项目后续新增或维护的 Markdown 文档统一使用中文编写。

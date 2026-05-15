@@ -160,6 +160,7 @@ rtk git status --short
 ## 重要文件
 
 - 根说明：`README.md`
+- MCP 使用说明：`docs/mcp-usage-guide.md`
 - 当前进度：`docs/development-status.md`
 - 第二阶段手动验收：`docs/phase2-manual-test.md`
 - Unity 包变更日志：`Packages/com.yys.unity2019-mcp/CHANGELOG.md`
