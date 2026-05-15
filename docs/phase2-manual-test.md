@@ -53,7 +53,7 @@
 预期结果：
 
 - 目标 Unity 工程的 `Assets/` 下出现 `McpPhase2Behaviour.cs`。
-- Unity 开始编译并最终完成。
+- Unity 开始导入脚本并最终完成编译。即使 Unity Editor 未聚焦，也应该由 Bridge 主动请求导入与编译。
 - Unity Console 无脚本编译错误。
 
 ## 挂载脚本
@@ -71,6 +71,7 @@
 预期结果：
 
 - 如果 Unity 正在编译，Bridge 会等待编译完成。
+- 如果编译尚未启动，Bridge 会等待目标脚本类型实际出现在 AppDomain 中。
 - 编译完成后，`MCP_Phase2_Object` 上出现 `McpPhase2Behaviour` 组件。
 - 如果超时，返回 `UNITY_COMPILING`。
 - 如果脚本类型不可用，返回 `SCRIPT_COMPILE_FAILED`。

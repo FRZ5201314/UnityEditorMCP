@@ -12,6 +12,14 @@ namespace Unity2019Mcp.Bridge
 {
     public class McpHttpListener
     {
+        private class ScriptAttachWaitStatus
+        {
+            public bool isCompiling;
+            public bool typeFound;
+            public int candidateCount;
+            public string[] candidates;
+        }
+
         private readonly string _prefix;
         private readonly int _timeoutMs;
         private HttpListener _listener;
@@ -130,11 +138,15 @@ namespace Unity2019Mcp.Bridge
             }
 
             var timeoutMs = ParamUtil.Get(request.@params, "compileTimeoutMs", _timeoutMs);
+            var typeName = ParamUtil.Get<string>(request.@params, "typeName", null);
             var start = DateTime.UtcNow;
+            var lastStatus = new ScriptAttachWaitStatus();
             while (true)
             {
-                var isCompiling = (bool)MainThreadDispatcher.Invoke(() => EditorApplication.isCompiling, 1000);
-                if (!isCompiling)
+                lastStatus = (ScriptAttachWaitStatus)MainThreadDispatcher.Invoke(
+                    () => GetScriptAttachWaitStatus(typeName),
+                    1000);
+                if (lastStatus.typeFound && !lastStatus.isCompiling)
                 {
                     return null;
                 }
@@ -143,13 +155,31 @@ namespace Unity2019Mcp.Bridge
                 {
                     return McpCommandResponse.Fail(
                         request.id,
-                        "UNITY_COMPILING",
-                        "Unity is still compiling after " + timeoutMs + "ms.",
-                        null);
+                        lastStatus.isCompiling ? "UNITY_COMPILING" : "SCRIPT_COMPILE_FAILED",
+                        lastStatus.isCompiling
+                            ? "Unity is still compiling after " + timeoutMs + "ms."
+                            : "Script component type is not available after " + timeoutMs + "ms: " + typeName,
+                        lastStatus.candidates);
                 }
 
                 Thread.Sleep(200);
             }
+        }
+
+        private static ScriptAttachWaitStatus GetScriptAttachWaitStatus(string typeName)
+        {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            EditorApplication.QueuePlayerLoopUpdate();
+
+            var candidates = new System.Collections.Generic.List<string>();
+            var type = TypeResolver.ResolveComponentType(typeName, out candidates);
+            return new ScriptAttachWaitStatus
+            {
+                isCompiling = EditorApplication.isCompiling,
+                typeFound = type != null,
+                candidateCount = candidates.Count,
+                candidates = candidates.ToArray()
+            };
         }
 
         private static void WriteJson(HttpListenerContext context, int statusCode, object payload)

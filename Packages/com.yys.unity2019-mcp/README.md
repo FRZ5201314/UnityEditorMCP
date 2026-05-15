@@ -46,4 +46,5 @@ Tools > Unity 2019 MCP > Stop Bridge
 - MCP Server 位于仓库根目录的 `server/`。
 - Unity Editor API 会在 Unity 主线程执行。
 - 脚本文件只能创建在目标工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
-- `script.attach` 会等待 Unity 编译结束后再尝试挂载脚本组件，可通过 `compileTimeoutMs` 设置等待超时。
+- `script.create` 会在写入脚本后强制导入资源并请求脚本编译。
+- `script.attach` 会等待目标脚本组件类型可解析后再尝试挂载，可通过 `compileTimeoutMs` 设置等待超时。

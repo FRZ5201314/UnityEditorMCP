@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Unity2019Mcp.Models;
 using Unity2019Mcp.Utils;
 using UnityEditor;
+using UnityEditor.Compilation;
 
 namespace Unity2019Mcp.Commands
 {
@@ -48,8 +49,11 @@ namespace Unity2019Mcp.Commands
             }
 
             File.WriteAllText(assetPath, content);
-            AssetDatabase.Refresh();
-            return new { assetPath = assetPath, className = className, created = true };
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            CompilationPipeline.RequestScriptCompilation();
+            EditorApplication.QueuePlayerLoopUpdate();
+            return new { assetPath = assetPath, className = className, created = true, requestedCompilation = true };
         }
 
         public static object Attach(Dictionary<string, object> parameters)
