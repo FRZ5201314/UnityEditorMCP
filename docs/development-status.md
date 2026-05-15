@@ -11,8 +11,8 @@
 
 ## 当前版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.4.0`
-- MCP Server：`unity2019-mcp-server@0.4.0`
+- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.5.0`
+- MCP Server：`unity2019-mcp-server@0.5.0`
 - Unity 目标版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 
@@ -119,15 +119,17 @@ server/
 - `component.setProperty`。已实现，支持基础 `SerializedProperty` 类型。
 - `component.getProperty`。已实现，支持基础 `SerializedProperty` 类型。
 
-第四阶段已完成代码实现，仍需要在 Unity 2019.4 中执行 `docs/phase4-manual-test.md` 手动验收。
+第四阶段已完成代码实现，并已由用户手动验证正常。
 
 ### P3：稳定性与安全性
 
-- 命令白名单与配置化安全策略。
-- 删除、脚本写入等危险操作的配置开关。
-- 日志文件。
-- Bridge 端口冲突处理。
-- MCP Server 自动探测 Bridge。
+- 命令白名单与配置化安全策略。已实现危险操作拦截。
+- 删除、脚本写入等危险操作的配置开关。已实现 Unity 菜单开关。
+- 日志文件。已实现 `Library/Unity2019Mcp/bridge.log`。
+- Bridge 端口冲突处理。已实现 `8765-8775` 端口回退。
+- MCP Server 自动探测 Bridge。已实现本地端口扫描。
+
+第五阶段已完成代码实现，仍需要在 Unity 2019.4 中执行 `docs/phase5-manual-test.md` 手动验收。
 
 ## 常用验证命令
 

@@ -7,10 +7,11 @@ import { registerTools } from "./tools/registerTools.js";
 
 async function main(): Promise<void> {
   const config = loadConfig();
-  const bridge = new UnityBridgeClient(config.bridgeUrl, config.timeoutMs);
+  const detectUrls = config.autoDetect ? buildDetectUrls(config.detectHost, config.detectPortStart, config.detectPortEnd) : [];
+  const bridge = new UnityBridgeClient(config.bridgeUrl, config.timeoutMs, detectUrls);
   const server = new McpServer({
     name: "unity2019-mcp",
-    version: "0.1.0",
+    version: "0.5.0",
   });
 
   registerTools(server, bridge);
@@ -22,3 +23,14 @@ main().catch(error => {
   console.error(message);
   process.exit(1);
 });
+
+function buildDetectUrls(host: string, start: number, end: number): string[] {
+  const urls: string[] = [];
+  const first = Math.min(start, end);
+  const last = Math.max(start, end);
+  for (let port = first; port <= last; port += 1) {
+    urls.push(`http://${host}:${port}`);
+  }
+
+  return urls;
+}

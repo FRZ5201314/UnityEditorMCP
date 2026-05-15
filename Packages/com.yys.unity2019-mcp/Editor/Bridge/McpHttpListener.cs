@@ -45,6 +45,11 @@ namespace Unity2019Mcp.Bridge
             EnsureLogCaptureInitialized();
         }
 
+        public string Prefix
+        {
+            get { return _prefix; }
+        }
+
         public void Start()
         {
             if (_running)
@@ -102,7 +107,9 @@ namespace Unity2019Mcp.Bridge
                         {
                             ok = true,
                             service = "Unity2019MCP",
-                            unityVersion = Application.unityVersion
+                            unityVersion = Application.unityVersion,
+                            bridgeUrl = _prefix,
+                            config = BridgeSettings.ToDto()
                         },
                         _timeoutMs);
                     WriteJson(context, 200, health);
@@ -113,9 +120,12 @@ namespace Unity2019Mcp.Bridge
                 {
                     var body = ReadBody(context.Request);
                     var request = JsonUtil.FromJson<McpCommandRequest>(body);
+                    var commandName = request == null ? "<invalid>" : request.command;
+                    BridgeLogger.Info("Command received: " + commandName);
                     var waitError = WaitForCompilationIfNeeded(request);
                     if (waitError != null)
                     {
+                        BridgeLogger.Warning("Command wait failed: " + commandName + " " + waitError.error.code);
                         WriteJson(context, 200, waitError);
                         return;
                     }
@@ -123,6 +133,14 @@ namespace Unity2019Mcp.Bridge
                     var response = (McpCommandResponse)MainThreadDispatcher.Invoke(
                         () => McpCommandDispatcher.Execute(request),
                         _timeoutMs);
+                    if (response.ok)
+                    {
+                        BridgeLogger.Info("Command completed: " + commandName);
+                    }
+                    else
+                    {
+                        BridgeLogger.Warning("Command failed: " + commandName + " " + response.error.code + " " + response.error.message);
+                    }
                     WriteJson(context, 200, response);
                     return;
                 }
@@ -131,6 +149,7 @@ namespace Unity2019Mcp.Bridge
             }
             catch (Exception ex)
             {
+                BridgeLogger.Error("HTTP handler failed: " + ex);
                 WriteJson(context, 500, McpCommandResponse.Fail(null, "OPERATION_FAILED", ex.Message, ex.ToString()));
             }
         }

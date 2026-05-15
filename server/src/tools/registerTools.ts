@@ -26,6 +26,8 @@ type ToolSchema = Parameters<McpServer["tool"]>[2];
 
 export function registerTools(server: McpServer, bridge: UnityBridgeClient): void {
   register(server, bridge, "unity_health", "Check whether the Unity Editor bridge is reachable.", emptySchema, async () => bridge.health());
+  register(server, bridge, "unity_bridge_get_config", "Get Unity bridge safety configuration.", emptySchema, async () => bridge.command("bridge.getConfig"));
+  register(server, bridge, "unity_bridge_get_log_path", "Get Unity bridge log file path.", emptySchema, async () => bridge.command("bridge.getLogPath"));
   register(server, bridge, "unity_project_get_info", "Get Unity version and current project information.", emptySchema, async () => bridge.command("project.getInfo"));
   register(server, bridge, "unity_scene_get_active", "Get the active Unity scene.", emptySchema, async () => bridge.command("scene.getActive"));
   register(server, bridge, "unity_scene_new", "Create a new Unity scene.", sceneNewSchema, async args => bridge.command("scene.new", args));

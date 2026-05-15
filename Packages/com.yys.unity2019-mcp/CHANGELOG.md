@@ -1,5 +1,11 @@
 # 更新日志
 
+## 0.5.0
+
+- 新增第五阶段稳定性能力：Bridge 文件日志、启动端口回退和 MCP Server 本地端口自动探测。
+- 新增安全开关：可通过 Unity 菜单关闭删除、脚本写入和资源删除操作，关闭后返回 `OPERATION_BLOCKED`。
+- 新增只读工具：`bridge.getConfig`、`bridge.getLogPath`。
+
 ## 0.4.0
 
 - 新增第四阶段 Asset 工具：`asset.find`、`asset.load`、`asset.createFolder`、`asset.delete`。

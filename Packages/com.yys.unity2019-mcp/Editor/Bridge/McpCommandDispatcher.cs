@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity2019Mcp.Commands;
 using Unity2019Mcp.Models;
+using Unity2019Mcp.Utils;
 
 namespace Unity2019Mcp.Bridge
 {
@@ -12,6 +13,8 @@ namespace Unity2019Mcp.Bridge
             new Dictionary<string, Func<Dictionary<string, object>, object>>
             {
                 { "project.getInfo", ProjectCommands.GetInfo },
+                { "bridge.getConfig", BridgeCommands.GetConfig },
+                { "bridge.getLogPath", BridgeCommands.GetLogPath },
                 { "scene.getActive", SceneCommands.GetActive },
                 { "scene.new", SceneCommands.New },
                 { "scene.open", SceneCommands.Open },
@@ -57,6 +60,12 @@ namespace Unity2019Mcp.Bridge
 
             try
             {
+                var blocked = GetBlockedReason(request.command);
+                if (blocked != null)
+                {
+                    return McpCommandResponse.Fail(request.id, "OPERATION_BLOCKED", blocked, BridgeSettings.ToDto());
+                }
+
                 var result = Handlers[request.command](request.@params ?? new Dictionary<string, object>());
                 return McpCommandResponse.Success(request.id, result);
             }
@@ -87,6 +96,26 @@ namespace Unity2019Mcp.Bridge
             {
                 return McpCommandResponse.Fail(request.id, "OPERATION_FAILED", ex.Message, ex.ToString());
             }
+        }
+
+        private static string GetBlockedReason(string command)
+        {
+            if (!BridgeSettings.AllowDelete && (command == "gameObject.delete" || command == "component.remove"))
+            {
+                return "Delete operations are disabled by Unity2019MCP safety settings.";
+            }
+
+            if (!BridgeSettings.AllowScriptWrite && command == "script.create")
+            {
+                return "Script write operations are disabled by Unity2019MCP safety settings.";
+            }
+
+            if (!BridgeSettings.AllowAssetDelete && command == "asset.delete")
+            {
+                return "Asset delete operations are disabled by Unity2019MCP safety settings.";
+            }
+
+            return null;
         }
     }
 }

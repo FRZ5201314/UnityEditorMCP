@@ -2,16 +2,18 @@ import { BridgeError } from "../errors.js";
 import type { UnityBridgeRequest, UnityBridgeResponse } from "./UnityBridgeTypes.js";
 
 export class UnityBridgeClient {
-  private readonly baseUrl: string;
+  private baseUrl: string;
   private readonly timeoutMs: number;
+  private readonly detectUrls: string[];
 
-  public constructor(baseUrl: string, timeoutMs: number) {
+  public constructor(baseUrl: string, timeoutMs: number, detectUrls: string[] = []) {
     this.baseUrl = baseUrl.replace(/\/$/, "");
     this.timeoutMs = timeoutMs;
+    this.detectUrls = detectUrls.map(url => url.replace(/\/$/, "")).filter(url => url !== this.baseUrl);
   }
 
   public async health(): Promise<unknown> {
-    return this.fetchJson(`${this.baseUrl}/health`, { method: "GET" });
+    return this.fetchJsonWithDetect("/health", { method: "GET" });
   }
 
   public async command<T>(command: string, params: Record<string, unknown> = {}): Promise<T> {
@@ -21,7 +23,7 @@ export class UnityBridgeClient {
       params,
     };
 
-    const response = await this.fetchJson<UnityBridgeResponse<T>>(`${this.baseUrl}/command`, {
+    const response = await this.fetchJsonWithDetect<UnityBridgeResponse<T>>("/command", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -40,9 +42,40 @@ export class UnityBridgeClient {
     return response.result as T;
   }
 
-  private async fetchJson<T = unknown>(url: string, init: RequestInit): Promise<T> {
+  private async fetchJsonWithDetect<T = unknown>(path: string, init: RequestInit): Promise<T> {
+    try {
+      return await this.fetchJson<T>(`${this.baseUrl}${path}`, init);
+    } catch (error) {
+      if (!(error instanceof BridgeError) || error.code !== "BRIDGE_UNAVAILABLE") {
+        throw error;
+      }
+
+      const detected = await this.detectBridge();
+      if (!detected) {
+        throw error;
+      }
+
+      return this.fetchJson<T>(`${this.baseUrl}${path}`, init);
+    }
+  }
+
+  private async detectBridge(): Promise<boolean> {
+    for (const candidate of this.detectUrls) {
+      try {
+        await this.fetchJson(`${candidate}/health`, { method: "GET" }, Math.min(this.timeoutMs, 1_000), candidate);
+        this.baseUrl = candidate;
+        return true;
+      } catch {
+        // Try the next configured bridge URL.
+      }
+    }
+
+    return false;
+  }
+
+  private async fetchJson<T = unknown>(url: string, init: RequestInit, timeoutMs = this.timeoutMs, errorBaseUrl = this.baseUrl): Promise<T> {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
       const response = await fetch(url, { ...init, signal: controller.signal });
@@ -59,7 +92,7 @@ export class UnityBridgeClient {
       const message = error instanceof Error ? error.message : String(error);
       throw new BridgeError(
         "BRIDGE_UNAVAILABLE",
-        `Could not reach Unity bridge at ${this.baseUrl}. Open the Unity project and start Tools > Unity 2019 MCP > Start Bridge. ${message}`,
+        `Could not reach Unity bridge at ${errorBaseUrl}. Open the Unity project and start Tools > Unity 2019 MCP > Start Bridge. ${message}`,
       );
     } finally {
       clearTimeout(timeout);

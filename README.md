@@ -79,6 +79,10 @@ node dist/index.js
 ```text
 UNITY_MCP_BRIDGE_URL=http://127.0.0.1:8765
 UNITY_MCP_TIMEOUT_MS=30000
+UNITY_MCP_AUTO_DETECT=true
+UNITY_MCP_DETECT_HOST=127.0.0.1
+UNITY_MCP_DETECT_PORT_START=8765
+UNITY_MCP_DETECT_PORT_END=8775
 ```
 
 ## MCP 客户端配置示例
@@ -94,6 +98,8 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 ## 工具列表
 
 - `unity_health`
+- `unity_bridge_get_config`
+- `unity_bridge_get_log_path`
 - `unity_project_get_info`
 - `unity_scene_get_active`
 - `unity_scene_new`
@@ -128,6 +134,9 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 ## 注意事项
 
 - Unity Editor API 会在 Unity 主线程执行。
+- Bridge 默认监听端口被占用时会尝试 `8765-8775`。
+- MCP Server 默认会自动探测 `127.0.0.1:8765-8775` 上的 Bridge。
+- Bridge 日志写入 `Library/Unity2019Mcp/bridge.log`。
 - 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `unity_script_create` 会在写入脚本后请求 Unity 导入资源并编译脚本。
