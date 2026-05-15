@@ -105,6 +105,60 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 
 启动 MCP 客户端前，需要先完成 MCP Server 构建，并保持 Unity Editor 打开。
 
+### Codex 配置示例
+
+如果 Codex 使用 MCP JSON 配置，把下面配置合并到 Codex 的 MCP 配置文件中。若配置文件中已经存在 `mcpServers`，只需要把 `unity2019-mcp` 这一项加入已有对象。
+
+```json
+{
+  "mcpServers": {
+    "unity2019-mcp": {
+      "command": "node",
+      "args": [
+        "F:\\AIProject\\Unity2019MCP\\server\\dist\\index.js"
+      ],
+      "env": {
+        "UNITY_MCP_AUTO_DETECT": "true",
+        "UNITY_MCP_DETECT_HOST": "127.0.0.1",
+        "UNITY_MCP_DETECT_PORT_START": "8765",
+        "UNITY_MCP_DETECT_PORT_END": "8775",
+        "UNITY_MCP_TIMEOUT_MS": "30000"
+      }
+    }
+  }
+}
+```
+
+字段说明：
+
+- `command`：启动 MCP Server 的可执行程序。这里使用 `node`。
+- `args`：传给 `node` 的参数，即编译后的 MCP Server 入口文件。
+- `UNITY_MCP_AUTO_DETECT`：开启 Bridge 自动探测。推荐保持 `true`。
+- `UNITY_MCP_DETECT_PORT_START` / `UNITY_MCP_DETECT_PORT_END`：Bridge 端口探测范围，默认对应 Unity Bridge 的 `8765-8775` 回退范围。
+- `UNITY_MCP_TIMEOUT_MS`：等待 Unity Bridge 响应的超时时间。
+
+如果明确知道 Bridge 监听地址，也可以改成固定地址配置：
+
+```json
+{
+  "mcpServers": {
+    "unity2019-mcp": {
+      "command": "node",
+      "args": [
+        "F:\\AIProject\\Unity2019MCP\\server\\dist\\index.js"
+      ],
+      "env": {
+        "UNITY_MCP_BRIDGE_URL": "http://127.0.0.1:8765",
+        "UNITY_MCP_AUTO_DETECT": "false",
+        "UNITY_MCP_TIMEOUT_MS": "30000"
+      }
+    }
+  }
+}
+```
+
+推荐优先使用自动探测配置，因为 Unity Bridge 在 `8765` 被占用时会自动切换到 `8766-8775`。
+
 ## 环境变量
 
 默认情况下不需要设置环境变量。
@@ -129,30 +183,115 @@ UNITY_MCP_DETECT_PORT_END=8775
 
 ## 快速验证
 
-1. 确认 Unity Editor 已打开，且 Console 无编译错误。
-2. 在 MCP 客户端调用：
+本节用于确认 Codex 或其他 MCP 客户端已经正确连接 Unity Editor。
 
-```json
-{}
+### 1. 确认 Unity 侧状态
+
+先确认：
+
+- Unity Editor 已打开目标工程。
+- Unity Console 没有 C# 编译错误。
+- 已导入 `com.yys.unity2019-mcp` 本地包。
+- 菜单中能看到 `Tools > Unity 2019 MCP`。
+
+如果不确定 Bridge 是否已启动，执行：
+
+```text
+Tools > Unity 2019 MCP > Start Bridge
 ```
 
-工具：
+预期结果：
+
+- Unity Console 不出现 Bridge 启动错误。
+- `Library/Unity2019Mcp/bridge.log` 中出现 `Bridge started on ...`。
+
+### 2. 验证 MCP 到 Bridge 的连接
+
+调用工具：
 
 ```text
 unity_health
 ```
 
-预期返回 Bridge 可达。
+输入参数：
 
-3. 调用：
+```json
+{}
+```
+
+预期结果：
+
+- 返回成功结果。
+- 如果失败，优先检查 Unity Editor 是否打开、Bridge 是否启动、Codex MCP 配置中的 `args` 路径是否正确。
+
+### 3. 读取工程信息
+
+调用工具：
 
 ```text
 unity_project_get_info
 ```
 
-预期返回 Unity 版本、工程路径等信息。
+输入参数：
 
-4. 创建测试对象：
+```json
+{}
+```
+
+预期结果：
+
+- 返回 Unity 版本。
+- 返回当前工程路径。
+- 返回 Bridge 所在 Unity Editor 的基本信息。
+
+### 4. 查询当前场景
+
+调用工具：
+
+```text
+unity_scene_get_active
+```
+
+输入参数：
+
+```json
+{}
+```
+
+预期结果：
+
+- 返回当前打开场景的路径、名称和保存状态。
+
+### 5. 列出 Hierarchy
+
+调用工具：
+
+```text
+unity_hierarchy_list
+```
+
+输入参数：
+
+```json
+{
+  "recursive": true
+}
+```
+
+预期结果：
+
+- 返回当前场景中的 GameObject 列表。
+- 如果是空场景，也应返回结构化结果，而不是连接错误。
+
+### 6. 创建测试对象
+
+调用工具：
+
+```text
+unity_gameobject_create
+```
+
+输入参数：
 
 ```json
 {
@@ -160,13 +299,69 @@ unity_project_get_info
 }
 ```
 
-工具：
+预期结果：
+
+- Unity Hierarchy 中出现 `McpTestObject`。
+- 工具返回对象路径、实例 ID 等信息。
+
+### 7. 修改测试对象 Transform
+
+调用工具：
 
 ```text
-unity_gameobject_create
+unity_transform_set
 ```
 
-预期 Unity Hierarchy 中出现 `McpTestObject`。
+输入参数：
+
+```json
+{
+  "path": "McpTestObject",
+  "position": { "x": 1, "y": 2, "z": 3 },
+  "rotation": { "x": 0, "y": 45, "z": 0 },
+  "scale": { "x": 1, "y": 1, "z": 1 }
+}
+```
+
+预期结果：
+
+- Unity Inspector 中 `McpTestObject` 的 Transform 更新。
+- 工具返回成功结果。
+
+### 8. 保存验证场景
+
+如果当前场景还没有保存，调用：
+
+```text
+unity_scene_save_as
+```
+
+输入参数：
+
+```json
+{
+  "path": "Assets/Scenes/McpQuickTest.unity"
+}
+```
+
+如果当前场景已有路径，也可以调用：
+
+```text
+unity_scene_save
+```
+
+输入参数：
+
+```json
+{}
+```
+
+预期结果：
+
+- 场景保存成功。
+- `Assets/Scenes/McpQuickTest.unity` 出现在 Project 视图中，或当前场景保存状态变为 clean。
+
+完成以上步骤后，可以认为 MCP Server、Unity Bridge、端口探测和基础 Unity Editor 操作链路都已经可用。
 
 ## 常用工作流
 
