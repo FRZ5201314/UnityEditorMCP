@@ -1,5 +1,20 @@
 # 更新日志
 
+## 0.4.0
+
+- 新增第四阶段 Asset 工具：`asset.find`、`asset.load`、`asset.createFolder`、`asset.delete`。
+- 新增 Inspector 属性工具：`component.getProperty`、`component.setProperty`，支持基础 `SerializedProperty` 类型读写和资源引用赋值。
+
+## 0.3.0
+
+- 新增第三阶段 Scene 工具：`scene.new`、`scene.open`、`scene.saveAs`、`scene.getDirty`。
+- 新增第三阶段 Prefab 工具：`prefab.create`、`prefab.instantiate`、`prefab.apply`。
+
+## 0.2.3
+
+- 增强 `script.attach` 失败诊断，`SCRIPT_COMPILE_FAILED`、`UNITY_COMPILING` 和脚本类型歧义会返回结构化 details。
+- `script.attach` 等待期间会记录近期 Unity Console 错误，便于定位脚本编译失败原因。
+
 ## 0.2.2
 
 - Bridge 初始化时立即启动监听，并在脚本域重载完成后通过 `DidReloadScripts` 主动恢复监听。

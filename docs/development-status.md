@@ -11,8 +11,8 @@
 
 ## 当前版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.2.2`
-- MCP Server：`unity2019-mcp-server@0.2.0`
+- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.4.0`
+- MCP Server：`unity2019-mcp-server@0.4.0`
 - Unity 目标版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 
@@ -69,6 +69,7 @@ server/
 - `script.attach` 支持 `compileTimeoutMs`。
 - `script.attach` 会等待目标脚本类型可解析后再尝试挂载。
 - Bridge 在脚本域重载后通过 `DidReloadScripts` 自动恢复监听。
+- `script.attach` 失败时会返回结构化 details，包含等待状态、候选类型和近期 Unity Console 错误。
 
 ## 已解决问题
 
@@ -90,31 +91,35 @@ server/
 
 ### P0：第二阶段收尾
 
-- 增强脚本编译失败诊断。
-- 明确返回 `SCRIPT_COMPILE_FAILED` 的 details。
-- 补充第二阶段测试结果记录。
+- 增强脚本编译失败诊断。已完成。
+- 明确返回 `SCRIPT_COMPILE_FAILED` 的 details。已完成。
+- 补充第二阶段测试结果记录。已补充失败诊断验收项，仍建议在 Unity 2019.4 中手动跑一遍。
 - 如条件允许，增加 Unity EditMode 测试。
 
 ### P1：第三阶段 Scene 与 Prefab
 
 完成第二阶段收尾后，进入 Scene 与 Prefab 能力：
 
-- `scene.new`
-- `scene.open`
-- `scene.saveAs`
-- `scene.getDirty`
-- `prefab.create`
-- `prefab.instantiate`
-- `prefab.apply`
+- `scene.new`。已实现。
+- `scene.open`。已实现。
+- `scene.saveAs`。已实现。
+- `scene.getDirty`。已实现。
+- `prefab.create`。已实现。
+- `prefab.instantiate`。已实现。
+- `prefab.apply`。已实现。
+
+第三阶段已完成代码实现，并已由用户手动验证创建场景和 Prefab 正常。
 
 ### P2：第四阶段 Asset 与 Inspector 属性
 
-- `asset.find`
-- `asset.load`
-- `asset.createFolder`
-- `asset.delete`
-- `component.setProperty`
-- `component.getProperty`
+- `asset.find`。已实现。
+- `asset.load`。已实现。
+- `asset.createFolder`。已实现。
+- `asset.delete`。已实现。
+- `component.setProperty`。已实现，支持基础 `SerializedProperty` 类型。
+- `component.getProperty`。已实现，支持基础 `SerializedProperty` 类型。
+
+第四阶段已完成代码实现，仍需要在 Unity 2019.4 中执行 `docs/phase4-manual-test.md` 手动验收。
 
 ### P3：稳定性与安全性
 

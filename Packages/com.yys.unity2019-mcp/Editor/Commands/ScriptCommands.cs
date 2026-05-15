@@ -60,7 +60,10 @@ namespace Unity2019Mcp.Commands
         {
             if (EditorApplication.isCompiling)
             {
-                throw new McpCommandException("UNITY_COMPILING", "Unity is compiling. Retry after compilation finishes.", null);
+                throw new McpCommandException(
+                    "UNITY_COMPILING",
+                    "Unity is compiling. Retry after compilation finishes.",
+                    BuildAttachFailureDetails(parameters, "unity_compiling"));
             }
 
             try
@@ -69,8 +72,21 @@ namespace Unity2019Mcp.Commands
             }
             catch (TypeLoadException ex)
             {
-                throw new McpCommandException("SCRIPT_COMPILE_FAILED", ex.Message, null);
+                throw new McpCommandException("SCRIPT_COMPILE_FAILED", ex.Message, BuildAttachFailureDetails(parameters, "type_not_found"));
             }
+        }
+
+        private static object BuildAttachFailureDetails(Dictionary<string, object> parameters, string reason)
+        {
+            return new
+            {
+                reason = reason,
+                path = ParamUtil.Get<string>(parameters, "path", null),
+                typeName = ParamUtil.Get<string>(parameters, "typeName", null),
+                isUpdating = EditorApplication.isUpdating,
+                isCompiling = EditorApplication.isCompiling,
+                hint = "Check Unity Console compile errors and ensure the requested typeName is a non-abstract MonoBehaviour or Component type."
+            };
         }
     }
 }

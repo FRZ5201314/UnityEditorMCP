@@ -13,7 +13,11 @@ namespace Unity2019Mcp.Bridge
             {
                 { "project.getInfo", ProjectCommands.GetInfo },
                 { "scene.getActive", SceneCommands.GetActive },
+                { "scene.new", SceneCommands.New },
+                { "scene.open", SceneCommands.Open },
                 { "scene.save", SceneCommands.Save },
+                { "scene.saveAs", SceneCommands.SaveAs },
+                { "scene.getDirty", SceneCommands.GetDirty },
                 { "hierarchy.list", HierarchyCommands.List },
                 { "gameObject.create", GameObjectCommands.Create },
                 { "gameObject.delete", GameObjectCommands.Delete },
@@ -25,9 +29,18 @@ namespace Unity2019Mcp.Bridge
                 { "component.add", ComponentCommands.Add },
                 { "component.remove", ComponentCommands.Remove },
                 { "component.get", ComponentCommands.Get },
+                { "component.getProperty", ComponentCommands.GetProperty },
+                { "component.setProperty", ComponentCommands.SetProperty },
                 { "script.create", ScriptCommands.Create },
                 { "script.attach", ScriptCommands.Attach },
-                { "asset.refresh", AssetCommands.Refresh }
+                { "asset.refresh", AssetCommands.Refresh },
+                { "asset.find", AssetCommands.Find },
+                { "asset.load", AssetCommands.Load },
+                { "asset.createFolder", AssetCommands.CreateFolder },
+                { "asset.delete", AssetCommands.Delete },
+                { "prefab.create", PrefabCommands.Create },
+                { "prefab.instantiate", PrefabCommands.Instantiate },
+                { "prefab.apply", PrefabCommands.Apply }
             };
 
         public static McpCommandResponse Execute(McpCommandRequest request)

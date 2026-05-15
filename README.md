@@ -96,7 +96,11 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 - `unity_health`
 - `unity_project_get_info`
 - `unity_scene_get_active`
+- `unity_scene_new`
+- `unity_scene_open`
 - `unity_scene_save`
+- `unity_scene_save_as`
+- `unity_scene_get_dirty`
 - `unity_hierarchy_list`
 - `unity_gameobject_create`
 - `unity_gameobject_delete`
@@ -108,9 +112,18 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 - `unity_component_add`
 - `unity_component_remove`
 - `unity_component_get`
+- `unity_component_get_property`
+- `unity_component_set_property`
 - `unity_script_create`
 - `unity_script_attach`
 - `unity_asset_refresh`
+- `unity_asset_find`
+- `unity_asset_load`
+- `unity_asset_create_folder`
+- `unity_asset_delete`
+- `unity_prefab_create`
+- `unity_prefab_instantiate`
+- `unity_prefab_apply`
 
 ## 注意事项
 

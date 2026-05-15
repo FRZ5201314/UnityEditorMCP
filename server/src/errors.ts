@@ -12,7 +12,11 @@ export class BridgeError extends Error {
 
 export function toErrorText(error: unknown): string {
   if (error instanceof BridgeError) {
-    return `${error.code}: ${error.message}`;
+    if (error.details === undefined || error.details === null) {
+      return `${error.code}: ${error.message}`;
+    }
+
+    return `${error.code}: ${error.message}\n${JSON.stringify(error.details, null, 2)}`;
   }
 
   if (error instanceof Error) {

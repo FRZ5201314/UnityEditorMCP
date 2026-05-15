@@ -82,6 +82,36 @@
 - 编译完成后，`MCP_Phase2_Object` 上出现 `McpPhase2Behaviour` 组件。
 - 如果超时，返回 `UNITY_COMPILING`。
 - 如果脚本类型不可用，返回 `SCRIPT_COMPILE_FAILED`。
+- `SCRIPT_COMPILE_FAILED` 的 details 应包含 `reason`、`typeName`、`timeoutMs`、`isUpdating`、`isCompiling`、`candidateCount`、`candidates`、`recentErrors` 和 `hint`。
+
+## 编译失败诊断
+
+1. 调用 `unity_script_create` 创建一个包含 C# 语法错误的脚本：
+
+```json
+{
+  "assetPath": "Assets/McpPhase2BrokenBehaviour.cs",
+  "className": "McpPhase2BrokenBehaviour",
+  "content": "using UnityEngine;\n\npublic class McpPhase2BrokenBehaviour : MonoBehaviour\n{\n    void Start()\n    {\n        Debug.Log(\"broken\")\n    }\n}\n",
+  "overwrite": true
+}
+```
+
+2. 调用 `unity_script_attach`：
+
+```json
+{
+  "path": "MCP_Phase2_Object",
+  "typeName": "McpPhase2BrokenBehaviour",
+  "compileTimeoutMs": 60000
+}
+```
+
+预期结果：
+
+- 返回 `SCRIPT_COMPILE_FAILED`，或者 Unity 仍在导入/编译时返回 `UNITY_COMPILING`。
+- 错误文本中包含 details JSON。
+- details 中的 `recentErrors` 应包含 Unity Console 捕获到的编译错误；如果目标 Unity 版本未通过 log callback 暴露编译错误，也至少应包含等待状态、候选类型和 `hint`。
 
 ## 清理
 

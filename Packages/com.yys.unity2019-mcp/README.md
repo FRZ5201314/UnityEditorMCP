@@ -49,3 +49,7 @@ Tools > Unity 2019 MCP > Stop Bridge
 - 脚本文件只能创建在目标工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `script.create` 会在写入脚本后强制导入资源并请求脚本编译。
 - `script.attach` 会等待目标脚本组件类型可解析后再尝试挂载，可通过 `compileTimeoutMs` 设置等待超时。
+- Scene 工具支持新建、打开、保存为指定路径和查询 dirty 状态。
+- Prefab 工具支持从场景对象创建 prefab、实例化 prefab、应用 prefab 实例改动。
+- Asset 工具支持查找、加载元数据、创建文件夹和删除 `Assets/` 下资源。
+- Inspector 属性工具支持基础 `SerializedProperty` 类型读写。

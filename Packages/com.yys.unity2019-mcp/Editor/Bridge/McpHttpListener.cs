@@ -21,16 +21,28 @@ namespace Unity2019Mcp.Bridge
             public string[] candidates;
         }
 
+        private class CapturedLog
+        {
+            public string timeUtc;
+            public string type;
+            public string condition;
+            public string stackTrace;
+        }
+
         private readonly string _prefix;
         private readonly int _timeoutMs;
         private HttpListener _listener;
         private Thread _thread;
         private bool _running;
+        private static readonly object CapturedLogsLock = new object();
+        private static readonly System.Collections.Generic.List<CapturedLog> CapturedLogs = new System.Collections.Generic.List<CapturedLog>();
+        private static bool _logCaptureInitialized;
 
         public McpHttpListener(string host, int port, int timeoutMs)
         {
             _prefix = "http://" + host + ":" + port + "/";
             _timeoutMs = timeoutMs;
+            EnsureLogCaptureInitialized();
         }
 
         public void Start()
@@ -152,15 +164,25 @@ namespace Unity2019Mcp.Bridge
                     return null;
                 }
 
+                if (!lastStatus.isUpdating && !lastStatus.isCompiling && lastStatus.candidateCount > 1)
+                {
+                    return McpCommandResponse.Fail(
+                        request.id,
+                        "TYPE_AMBIGUOUS",
+                        "Script component type is ambiguous: " + typeName,
+                        BuildScriptAttachFailureDetails(typeName, timeoutMs, start, lastStatus, "type_ambiguous"));
+                }
+
                 if ((DateTime.UtcNow - start).TotalMilliseconds >= timeoutMs)
                 {
+                    var reason = lastStatus.isUpdating || lastStatus.isCompiling ? "unity_compiling" : "type_not_available";
                     return McpCommandResponse.Fail(
                         request.id,
                         lastStatus.isUpdating || lastStatus.isCompiling ? "UNITY_COMPILING" : "SCRIPT_COMPILE_FAILED",
                         lastStatus.isUpdating || lastStatus.isCompiling
                             ? "Unity is still importing or compiling after " + timeoutMs + "ms."
                             : "Script component type is not available after " + timeoutMs + "ms: " + typeName,
-                        lastStatus.candidates);
+                        BuildScriptAttachFailureDetails(typeName, timeoutMs, start, lastStatus, reason));
                 }
 
                 Thread.Sleep(200);
@@ -181,6 +203,84 @@ namespace Unity2019Mcp.Bridge
                 candidateCount = candidates.Count,
                 candidates = candidates.ToArray()
             };
+        }
+
+        private static object BuildScriptAttachFailureDetails(
+            string typeName,
+            int timeoutMs,
+            DateTime start,
+            ScriptAttachWaitStatus status,
+            string reason)
+        {
+            return new
+            {
+                reason = reason,
+                typeName = typeName,
+                timeoutMs = timeoutMs,
+                elapsedMs = (int)(DateTime.UtcNow - start).TotalMilliseconds,
+                isUpdating = status.isUpdating,
+                isCompiling = status.isCompiling,
+                typeFound = status.typeFound,
+                candidateCount = status.candidateCount,
+                candidates = status.candidates,
+                recentErrors = GetRecentCapturedErrors(start.AddSeconds(-2)),
+                hint = "Check Unity Console compile errors and ensure the class name, namespace, file name, and MonoBehaviour inheritance match the requested typeName."
+            };
+        }
+
+        private static void EnsureLogCaptureInitialized()
+        {
+            if (_logCaptureInitialized)
+            {
+                return;
+            }
+
+            _logCaptureInitialized = true;
+            Application.logMessageReceived += CaptureLogMessage;
+        }
+
+        private static void CaptureLogMessage(string condition, string stackTrace, LogType type)
+        {
+            if (type != LogType.Error && type != LogType.Exception && type != LogType.Assert)
+            {
+                return;
+            }
+
+            lock (CapturedLogsLock)
+            {
+                CapturedLogs.Add(new CapturedLog
+                {
+                    timeUtc = DateTime.UtcNow.ToString("o"),
+                    type = type.ToString(),
+                    condition = condition,
+                    stackTrace = stackTrace
+                });
+
+                while (CapturedLogs.Count > 50)
+                {
+                    CapturedLogs.RemoveAt(0);
+                }
+            }
+        }
+
+        private static CapturedLog[] GetRecentCapturedErrors(DateTime sinceUtc)
+        {
+            var recent = new System.Collections.Generic.List<CapturedLog>();
+            lock (CapturedLogsLock)
+            {
+                foreach (var log in CapturedLogs)
+                {
+                    DateTime logTime;
+                    if (!DateTime.TryParse(log.timeUtc, out logTime) || logTime < sinceUtc)
+                    {
+                        continue;
+                    }
+
+                    recent.Add(log);
+                }
+            }
+
+            return recent.ToArray();
         }
 
         private static void WriteJson(HttpListenerContext context, int statusCode, object payload)
