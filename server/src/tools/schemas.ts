@@ -51,4 +51,5 @@ export const scriptCreateSchema = {
 export const scriptAttachSchema = {
   path: z.string().min(1),
   typeName: z.string().min(1),
+  compileTimeoutMs: z.number().int().positive().optional(),
 };

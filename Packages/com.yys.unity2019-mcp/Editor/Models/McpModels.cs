@@ -1,7 +1,20 @@
 using System.Collections.Generic;
+using System;
 
 namespace Unity2019Mcp.Models
 {
+    public class McpCommandException : Exception
+    {
+        public string code;
+        public object details;
+
+        public McpCommandException(string code, string message, object details) : base(message)
+        {
+            this.code = code;
+            this.details = details;
+        }
+    }
+
     public class McpCommandRequest
     {
         public string id;

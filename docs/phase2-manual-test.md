@@ -1,0 +1,86 @@
+# 第二阶段手动验收
+
+本文档用于验证 Component 与脚本挂载能力是否可用。
+
+## 前置条件
+
+- 目标 Unity 工程已通过 Package Manager 导入 `com.yys.unity2019-mcp`。
+- Unity Console 无编译错误。
+- Bridge 已启动，`unity_health` 可正常返回。
+- MCP Server 已构建并在 MCP 客户端中可用。
+
+## 添加内置组件
+
+1. 调用 `unity_gameobject_create` 创建对象：
+
+```json
+{
+  "name": "MCP_Phase2_Object"
+}
+```
+
+2. 调用 `unity_component_add` 添加 Rigidbody：
+
+```json
+{
+  "path": "MCP_Phase2_Object",
+  "typeName": "Rigidbody"
+}
+```
+
+3. 调用 `unity_component_list`：
+
+```json
+{
+  "path": "MCP_Phase2_Object"
+}
+```
+
+预期结果：返回组件列表中包含 `Rigidbody`。
+
+## 创建脚本
+
+调用 `unity_script_create`：
+
+```json
+{
+  "assetPath": "Assets/McpPhase2Behaviour.cs",
+  "className": "McpPhase2Behaviour",
+  "overwrite": true
+}
+```
+
+预期结果：
+
+- 目标 Unity 工程的 `Assets/` 下出现 `McpPhase2Behaviour.cs`。
+- Unity 开始编译并最终完成。
+- Unity Console 无脚本编译错误。
+
+## 挂载脚本
+
+调用 `unity_script_attach`：
+
+```json
+{
+  "path": "MCP_Phase2_Object",
+  "typeName": "McpPhase2Behaviour",
+  "compileTimeoutMs": 60000
+}
+```
+
+预期结果：
+
+- 如果 Unity 正在编译，Bridge 会等待编译完成。
+- 编译完成后，`MCP_Phase2_Object` 上出现 `McpPhase2Behaviour` 组件。
+- 如果超时，返回 `UNITY_COMPILING`。
+- 如果脚本类型不可用，返回 `SCRIPT_COMPILE_FAILED`。
+
+## 清理
+
+可调用 `unity_gameobject_delete` 删除测试对象：
+
+```json
+{
+  "path": "MCP_Phase2_Object"
+}
+```

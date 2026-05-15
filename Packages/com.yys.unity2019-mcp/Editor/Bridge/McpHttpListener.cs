@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Unity2019Mcp.Models;
 using Unity2019Mcp.Utils;
+using UnityEditor;
 using UnityEngine;
 
 namespace Unity2019Mcp.Bridge
@@ -91,6 +92,13 @@ namespace Unity2019Mcp.Bridge
                 {
                     var body = ReadBody(context.Request);
                     var request = JsonUtil.FromJson<McpCommandRequest>(body);
+                    var waitError = WaitForCompilationIfNeeded(request);
+                    if (waitError != null)
+                    {
+                        WriteJson(context, 200, waitError);
+                        return;
+                    }
+
                     var response = (McpCommandResponse)MainThreadDispatcher.Invoke(
                         () => McpCommandDispatcher.Execute(request),
                         _timeoutMs);
@@ -111,6 +119,36 @@ namespace Unity2019Mcp.Bridge
             using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
             {
                 return reader.ReadToEnd();
+            }
+        }
+
+        private McpCommandResponse WaitForCompilationIfNeeded(McpCommandRequest request)
+        {
+            if (request == null || request.command != "script.attach")
+            {
+                return null;
+            }
+
+            var timeoutMs = ParamUtil.Get(request.@params, "compileTimeoutMs", _timeoutMs);
+            var start = DateTime.UtcNow;
+            while (true)
+            {
+                var isCompiling = (bool)MainThreadDispatcher.Invoke(() => EditorApplication.isCompiling, 1000);
+                if (!isCompiling)
+                {
+                    return null;
+                }
+
+                if ((DateTime.UtcNow - start).TotalMilliseconds >= timeoutMs)
+                {
+                    return McpCommandResponse.Fail(
+                        request.id,
+                        "UNITY_COMPILING",
+                        "Unity is still compiling after " + timeoutMs + "ms.",
+                        null);
+                }
+
+                Thread.Sleep(200);
             }
         }
 

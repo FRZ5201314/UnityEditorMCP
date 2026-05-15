@@ -110,5 +110,5 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 
 - Unity Editor API 会在 Unity 主线程执行。
 - 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
-- `unity_script_attach` 需要等待 Unity 编译完成后，脚本类型才可被挂载。
+- `unity_script_attach` 会等待 Unity 编译完成后再尝试挂载脚本类型，可通过 `compileTimeoutMs` 设置等待超时。
 - Component 类型名支持完整名称，例如 `UnityEngine.Rigidbody`，也支持短名称，例如 `Rigidbody`。

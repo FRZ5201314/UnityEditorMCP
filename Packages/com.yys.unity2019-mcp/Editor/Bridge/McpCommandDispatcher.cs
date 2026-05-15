@@ -66,6 +66,10 @@ namespace Unity2019Mcp.Bridge
                 var parts = ex.Message.Split('|');
                 return McpCommandResponse.Fail(request.id, "TYPE_AMBIGUOUS", parts[0], parts.Length > 1 ? parts[1].Split(';') : null);
             }
+            catch (McpCommandException ex)
+            {
+                return McpCommandResponse.Fail(request.id, ex.code, ex.Message, ex.details);
+            }
             catch (Exception ex)
             {
                 return McpCommandResponse.Fail(request.id, "OPERATION_FAILED", ex.Message, ex.ToString());

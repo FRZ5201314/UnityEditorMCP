@@ -1,5 +1,12 @@
 # 更新日志
 
+## 0.2.0
+
+- 完善第二阶段脚本挂载流程。
+- `script.attach` 支持等待 Unity 编译完成后再挂载脚本组件。
+- `script.attach` 支持通过 `compileTimeoutMs` 设置编译等待超时。
+- 脚本类型不可用时返回 `SCRIPT_COMPILE_FAILED` 结构化错误。
+
 ## 0.1.0
 
 - 初始本地 UPM 包版本。

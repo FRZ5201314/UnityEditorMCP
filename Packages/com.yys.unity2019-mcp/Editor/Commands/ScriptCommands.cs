@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Unity2019Mcp.Models;
 using Unity2019Mcp.Utils;
 using UnityEditor;
 
@@ -54,10 +56,17 @@ namespace Unity2019Mcp.Commands
         {
             if (EditorApplication.isCompiling)
             {
-                throw new IOException("Unity is compiling. Retry after compilation finishes.");
+                throw new McpCommandException("UNITY_COMPILING", "Unity is compiling. Retry after compilation finishes.", null);
             }
 
-            return ComponentCommands.Add(parameters);
+            try
+            {
+                return ComponentCommands.Add(parameters);
+            }
+            catch (TypeLoadException ex)
+            {
+                throw new McpCommandException("SCRIPT_COMPILE_FAILED", ex.Message, null);
+            }
         }
     }
 }
