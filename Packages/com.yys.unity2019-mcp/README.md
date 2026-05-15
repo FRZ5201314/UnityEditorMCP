@@ -45,6 +45,7 @@ Tools > Unity 2019 MCP > Stop Bridge
 - 本包仅包含 Unity Editor Bridge，不包含 Node.js MCP Server。
 - MCP Server 位于仓库根目录的 `server/`。
 - Unity Editor API 会在 Unity 主线程执行。
+- 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `script.create` 会在写入脚本后强制导入资源并请求脚本编译。
 - `script.attach` 会等待目标脚本组件类型可解析后再尝试挂载，可通过 `compileTimeoutMs` 设置等待超时。

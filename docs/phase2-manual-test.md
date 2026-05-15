@@ -54,6 +54,7 @@
 
 - 目标 Unity 工程的 `Assets/` 下出现 `McpPhase2Behaviour.cs`。
 - Unity 开始导入脚本并最终完成编译。即使 Unity Editor 未聚焦，也应该由 Bridge 主动请求导入与编译。
+- 脚本编译导致域重载后，Bridge 应自动恢复监听，无需手动执行 Start Bridge。
 - Unity Console 无脚本编译错误。
 
 ## 挂载脚本

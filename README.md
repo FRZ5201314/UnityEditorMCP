@@ -109,6 +109,7 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 ## 注意事项
 
 - Unity Editor API 会在 Unity 主线程执行。
+- 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `unity_script_create` 会在写入脚本后请求 Unity 导入资源并编译脚本。
 - `unity_script_attach` 会等待目标脚本类型可解析后再尝试挂载，可通过 `compileTimeoutMs` 设置等待超时。

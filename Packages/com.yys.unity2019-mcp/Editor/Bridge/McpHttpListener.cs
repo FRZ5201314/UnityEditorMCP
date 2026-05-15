@@ -14,6 +14,7 @@ namespace Unity2019Mcp.Bridge
     {
         private class ScriptAttachWaitStatus
         {
+            public bool isUpdating;
             public bool isCompiling;
             public bool typeFound;
             public int candidateCount;
@@ -155,9 +156,9 @@ namespace Unity2019Mcp.Bridge
                 {
                     return McpCommandResponse.Fail(
                         request.id,
-                        lastStatus.isCompiling ? "UNITY_COMPILING" : "SCRIPT_COMPILE_FAILED",
-                        lastStatus.isCompiling
-                            ? "Unity is still compiling after " + timeoutMs + "ms."
+                        lastStatus.isUpdating || lastStatus.isCompiling ? "UNITY_COMPILING" : "SCRIPT_COMPILE_FAILED",
+                        lastStatus.isUpdating || lastStatus.isCompiling
+                            ? "Unity is still importing or compiling after " + timeoutMs + "ms."
                             : "Script component type is not available after " + timeoutMs + "ms: " + typeName,
                         lastStatus.candidates);
                 }
@@ -168,13 +169,13 @@ namespace Unity2019Mcp.Bridge
 
         private static ScriptAttachWaitStatus GetScriptAttachWaitStatus(string typeName)
         {
-            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             EditorApplication.QueuePlayerLoopUpdate();
 
             var candidates = new System.Collections.Generic.List<string>();
             var type = TypeResolver.ResolveComponentType(typeName, out candidates);
             return new ScriptAttachWaitStatus
             {
+                isUpdating = EditorApplication.isUpdating,
                 isCompiling = EditorApplication.isCompiling,
                 typeFound = type != null,
                 candidateCount = candidates.Count,
