@@ -7,6 +7,12 @@
 - `Packages/com.yys.unity2019-mcp/`：Unity Editor Bridge，本地 UPM 包。
 - `server/`：Node.js + TypeScript MCP stdio server。
 
+当前开发进度与后续计划见：
+
+```text
+docs/development-status.md
+```
+
 ## 项目约定
 
 - 本项目后续新增或维护的 Markdown 文档统一使用中文编写。
