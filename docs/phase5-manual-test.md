@@ -1,6 +1,6 @@
 # 第五阶段手动验收
 
-本文档用于验证稳定性与安全能力是否可用。
+本文档用于验证稳定性与 Bridge 命令权限控制是否可用。
 
 ## 前置条件
 
@@ -31,12 +31,14 @@
 
 预期结果：日志中记录命令接收、完成或失败信息。
 
-## 安全开关
+## Bridge 命令权限开关
+
+这些开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
 
 1. 在 Unity 菜单中关闭：
 
 ```text
-Tools > Unity 2019 MCP > Safety > Allow Scene Object Delete
+Tools > Unity 2019 MCP > Bridge Permissions > Allow Scene Object Delete
 ```
 
 2. 调用 `unity_gameobject_delete` 删除任意测试对象。
@@ -50,13 +52,15 @@ Tools > Unity 2019 MCP > Safety > Allow Scene Object Delete
 4. 依次验证：
 
 ```text
-Tools > Unity 2019 MCP > Safety > Allow Script Write
-Tools > Unity 2019 MCP > Safety > Allow Asset Delete
+Tools > Unity 2019 MCP > Bridge Permissions > Allow Script Write
+Tools > Unity 2019 MCP > Bridge Permissions > Allow Asset Delete
 ```
 
 预期结果：关闭后，`unity_script_create` 和 `unity_asset_delete` 分别返回 `OPERATION_BLOCKED`。
 
 注意：`Allow Asset Delete` 只控制 `unity_asset_delete` 这类项目资源删除，不控制场景 Hierarchy 中的 `unity_gameobject_delete`。场景对象删除由 `Allow Scene Object Delete` 控制。
+
+注意：即使这些开关关闭，Codex 仍可能通过其他已授权通道完成任务，例如直接编辑磁盘文件、执行 Shell 命令、调用 Unity UI 或修改序列化资源。真正的项目保护应依赖 Git、备份、操作系统权限、只读工作区或客户端审批策略。
 
 ## 端口回退与自动探测
 

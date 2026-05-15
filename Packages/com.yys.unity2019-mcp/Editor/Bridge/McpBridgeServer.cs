@@ -76,45 +76,50 @@ namespace Unity2019Mcp.Bridge
             Debug.Log("Unity2019MCP bridge stopped.");
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Scene Object Delete")]
+        private const string PermissionsMenuRoot = "Tools/Unity 2019 MCP/Bridge Permissions/";
+        private const string AllowSceneDeleteMenu = PermissionsMenuRoot + "Allow Scene Object Delete";
+        private const string AllowScriptWriteMenu = PermissionsMenuRoot + "Allow Script Write";
+        private const string AllowAssetDeleteMenu = PermissionsMenuRoot + "Allow Asset Delete";
+
+        [MenuItem(AllowSceneDeleteMenu)]
         public static void ToggleAllowSceneDelete()
         {
             BridgeSettings.AllowSceneDelete = !BridgeSettings.AllowSceneDelete;
             BridgeLogger.Info("allowSceneDelete set to " + BridgeSettings.AllowSceneDelete);
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Scene Object Delete", true)]
+        [MenuItem(AllowSceneDeleteMenu, true)]
         public static bool ValidateAllowSceneDelete()
         {
-            Menu.SetChecked("Tools/Unity 2019 MCP/Safety/Allow Scene Object Delete", BridgeSettings.AllowSceneDelete);
+            Menu.SetChecked(AllowSceneDeleteMenu, BridgeSettings.AllowSceneDelete);
             return true;
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Script Write")]
+        [MenuItem(AllowScriptWriteMenu)]
         public static void ToggleAllowScriptWrite()
         {
             BridgeSettings.AllowScriptWrite = !BridgeSettings.AllowScriptWrite;
             BridgeLogger.Info("allowScriptWrite set to " + BridgeSettings.AllowScriptWrite);
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Script Write", true)]
+        [MenuItem(AllowScriptWriteMenu, true)]
         public static bool ValidateAllowScriptWrite()
         {
-            Menu.SetChecked("Tools/Unity 2019 MCP/Safety/Allow Script Write", BridgeSettings.AllowScriptWrite);
+            Menu.SetChecked(AllowScriptWriteMenu, BridgeSettings.AllowScriptWrite);
             return true;
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Asset Delete")]
+        [MenuItem(AllowAssetDeleteMenu)]
         public static void ToggleAllowAssetDelete()
         {
             BridgeSettings.AllowAssetDelete = !BridgeSettings.AllowAssetDelete;
             BridgeLogger.Info("allowAssetDelete set to " + BridgeSettings.AllowAssetDelete);
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Safety/Allow Asset Delete", true)]
+        [MenuItem(AllowAssetDeleteMenu, true)]
         public static bool ValidateAllowAssetDelete()
         {
-            Menu.SetChecked("Tools/Unity 2019 MCP/Safety/Allow Asset Delete", BridgeSettings.AllowAssetDelete);
+            Menu.SetChecked(AllowAssetDeleteMenu, BridgeSettings.AllowAssetDelete);
             return true;
         }
 

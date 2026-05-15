@@ -67,7 +67,7 @@ namespace Unity2019Mcp.Commands
         {
             if (!BridgeSettings.AllowAssetDelete)
             {
-                throw new McpCommandException("OPERATION_BLOCKED", "Asset delete operations are disabled by Unity2019MCP safety settings.", BridgeSettings.ToDto());
+                throw new McpCommandException("OPERATION_BLOCKED", "Asset delete operations are disabled by Unity2019MCP bridge command permissions.", BridgeSettings.ToDto());
             }
 
             var assetPath = ParamUtil.RequiredString(parameters, "assetPath");

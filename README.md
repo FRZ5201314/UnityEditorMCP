@@ -1,6 +1,6 @@
 # Unity 2019 MCP
 
-这是一个兼容 Unity 2019.4 LTS 的 MCP Server 与 Unity Editor Bridge，用于让支持 MCP 的 AI 客户端安全、稳定地操作 Unity Editor。
+这是一个兼容 Unity 2019.4 LTS 的 MCP Server 与 Unity Editor Bridge，用于让支持 MCP 的 AI 客户端稳定地操作 Unity Editor。
 
 当前仓库分为两部分：
 
@@ -137,7 +137,8 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 - Bridge 默认监听端口被占用时会尝试 `8765-8775`。
 - MCP Server 默认会自动探测 `127.0.0.1:8765-8775` 上的 Bridge。
 - Bridge 日志写入 `Library/Unity2019Mcp/bridge.log`。
-- `Allow Scene Object Delete` 控制场景对象删除，`Allow Asset Delete` 控制 `Assets/` 下资源删除。
+- `Tools > Unity 2019 MCP > Bridge Permissions` 下的开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
+- `Allow Scene Object Delete` 控制 `unity_gameobject_delete` 和 `unity_component_remove`，`Allow Asset Delete` 控制 `unity_asset_delete`，`Allow Script Write` 控制 `unity_script_create`。
 - 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `unity_script_create` 会在写入脚本后请求 Unity 导入资源并编译脚本。

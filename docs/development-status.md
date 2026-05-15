@@ -11,8 +11,8 @@
 
 ## 当前版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.5.1`
-- MCP Server：`unity2019-mcp-server@0.5.1`
+- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.5.2`
+- MCP Server：`unity2019-mcp-server@0.5.2`
 - Unity 目标版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 
@@ -121,15 +121,17 @@ server/
 
 第四阶段已完成代码实现，并已由用户手动验证正常。
 
-### P3：稳定性与安全性
+### P3：稳定性与 Bridge 命令权限
 
-- 命令白名单与配置化安全策略。已实现危险操作拦截。
-- 删除、脚本写入等危险操作的配置开关。已实现 Unity 菜单开关。
+- 命令白名单与 Bridge 命令权限控制。已实现部分高风险 MCP 命令拦截。
+- 删除、脚本写入等 MCP Bridge 命令的权限开关。已实现 Unity 菜单开关。
 - 日志文件。已实现 `Library/Unity2019Mcp/bridge.log`。
 - Bridge 端口冲突处理。已实现 `8765-8775` 端口回退。
 - MCP Server 自动探测 Bridge。已实现本地端口扫描。
 
 第五阶段已完成代码实现，仍需要在 Unity 2019.4 中执行 `docs/phase5-manual-test.md` 手动验收。
+
+说明：`Bridge Permissions` 只限制 MCP Bridge 暴露的命令入口，不限制 Codex、Shell、Unity UI 或文件系统层面的其他操作路径。
 
 ## 常用验证命令
 

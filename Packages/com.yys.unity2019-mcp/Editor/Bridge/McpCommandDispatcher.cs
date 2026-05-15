@@ -102,17 +102,17 @@ namespace Unity2019Mcp.Bridge
         {
             if (!BridgeSettings.AllowSceneDelete && (command == "gameObject.delete" || command == "component.remove"))
             {
-                return "Scene object delete operations are disabled by Unity2019MCP safety settings.";
+                return "Scene object delete operations are disabled by Unity2019MCP bridge command permissions.";
             }
 
             if (!BridgeSettings.AllowScriptWrite && command == "script.create")
             {
-                return "Script write operations are disabled by Unity2019MCP safety settings.";
+                return "Script write operations are disabled by Unity2019MCP bridge command permissions.";
             }
 
             if (!BridgeSettings.AllowAssetDelete && command == "asset.delete")
             {
-                return "Asset delete operations are disabled by Unity2019MCP safety settings.";
+                return "Asset delete operations are disabled by Unity2019MCP bridge command permissions.";
             }
 
             return null;

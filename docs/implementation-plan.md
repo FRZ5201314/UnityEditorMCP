@@ -2,7 +2,7 @@
 
 ## 目标
 
-实现一个明确适配 Unity 2019.4 LTS 的 MCP，用于让支持 MCP 的 AI 客户端安全、稳定地操作 Unity Editor。
+实现一个明确适配 Unity 2019.4 LTS 的 MCP，用于让支持 MCP 的 AI 客户端稳定地操作 Unity Editor。
 
 核心目标不是只做文件操作，而是提供 Unity Editor 场景级能力：
 
@@ -361,21 +361,23 @@ Unity Bridge：
 - 能修改常见 Unity 组件属性。
 - 能查找资源并作为引用赋值。
 
-## 第五阶段：安全与稳定性
+## 第五阶段：稳定性与 Bridge 命令权限
 
-目标：降低误操作风险，提升复杂项目可用性。
+目标：降低通过 MCP Bridge 命令误操作的风险，提升复杂项目可用性。
 
 能力：
 
 - 命令白名单。
 - 工程根目录限制。
 - 文件写入路径限制在 `Assets` 下。
-- 危险操作可配置为 requireConfirm。
+- 部分高风险 MCP Bridge 命令可配置为禁用。
 - 操作前自动记录 Undo。
 - 可选 dry-run。
 - 日志文件。
 - Bridge 端口冲突处理。
 - MCP Server 自动探测 Bridge。
+
+边界说明：这些配置只限制 MCP Bridge 命令入口，不构成 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。真正的项目保护应依赖 Git、备份、操作系统权限、只读工作区或客户端审批策略。
 
 建议配置文件：
 
@@ -386,9 +388,10 @@ Unity Bridge：
     "port": 8765,
     "timeoutMs": 30000
   },
-  "safety": {
-    "allowDelete": true,
+  "bridgePermissions": {
+    "allowSceneDelete": true,
     "allowScriptWrite": true,
+    "allowAssetDelete": true,
     "assetsRootOnly": true
   }
 }

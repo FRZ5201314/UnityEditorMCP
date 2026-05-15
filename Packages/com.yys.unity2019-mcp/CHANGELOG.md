@@ -1,5 +1,10 @@
 # 更新日志
 
+## 0.5.2
+
+- 将 Unity 菜单 `Safety` 改名为 `Bridge Permissions`，明确这些开关只限制 MCP Bridge 命令入口。
+- 更新 `OPERATION_BLOCKED` 文案和文档，避免将 Bridge 命令权限误解为 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
+
 ## 0.5.1
 
 - 将场景对象删除安全开关菜单改名为 `Allow Scene Object Delete`，避免与资源删除开关混淆。

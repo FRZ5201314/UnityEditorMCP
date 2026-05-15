@@ -47,7 +47,9 @@ Tools > Unity 2019 MCP > Stop Bridge
 - Unity Editor API 会在 Unity 主线程执行。
 - Bridge 默认监听端口被占用时会尝试 `8765-8775`。
 - Bridge 日志写入 `Library/Unity2019Mcp/bridge.log`。
-- 可通过 `Tools > Unity 2019 MCP > Safety` 菜单关闭场景对象删除、脚本写入和资源删除操作。
+- 可通过 `Tools > Unity 2019 MCP > Bridge Permissions` 菜单关闭部分 MCP Bridge 命令入口。
+- `Bridge Permissions` 只限制 MCP Bridge 命令本身，不限制 Codex、Shell、Unity UI 或其他方式对项目进行修改。
+- `Allow Scene Object Delete` 控制 `gameObject.delete` 和 `component.remove`，`Allow Asset Delete` 控制 `asset.delete`，`Allow Script Write` 控制 `script.create`。
 - 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `script.create` 会在写入脚本后强制导入资源并请求脚本编译。
