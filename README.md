@@ -7,9 +7,12 @@
 - `Packages/com.yys.unity2019-mcp/`：Unity Editor Bridge，本地 UPM 包。
 - `server/`：Node.js + TypeScript MCP stdio server。
 
-## 文档约定
+## 项目约定
 
-本项目后续新增或维护的 Markdown 文档统一使用中文编写。涉及命令、API 名称、工具名称、路径、错误码等技术标识时保留原文。
+- 本项目后续新增或维护的 Markdown 文档统一使用中文编写。
+- 本项目 Git 提交描述统一使用中文。
+- 涉及命令、API 名称、工具名称、路径、错误码等技术标识时保留原文。
+- Unity 包内的 `.meta` 文件需要纳入版本库，避免通过本地 Package Manager 导入时 GUID 不稳定。
 
 ## Unity 本地包导入
 
