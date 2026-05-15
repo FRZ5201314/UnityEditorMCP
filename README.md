@@ -2,21 +2,44 @@
 
 这是一个兼容 Unity 2019.4 LTS 的 MCP Server 与 Unity Editor Bridge，用于让支持 MCP 的 AI 客户端安全、稳定地操作 Unity Editor。
 
-## 已包含内容
+当前仓库分为两部分：
 
-- Unity Editor HTTP Bridge，默认地址为 `http://127.0.0.1:8765`
-- 使用 Node.js 与 TypeScript 实现的 MCP stdio server
-- 项目信息、场景、Hierarchy、GameObject、Transform、Component、脚本与 AssetDatabase 刷新工具
-- Bridge 结构化响应与 MCP 错误文本
+- `Packages/com.yys.unity2019-mcp/`：Unity Editor Bridge，本地 UPM 包。
+- `server/`：Node.js + TypeScript MCP stdio server。
 
 ## 文档约定
 
 本项目后续新增或维护的 Markdown 文档统一使用中文编写。涉及命令、API 名称、工具名称、路径、错误码等技术标识时保留原文。
 
-## Unity 设置
+## Unity 本地包导入
 
-1. 使用 Unity 2019.4 LTS 打开本目录。
-2. 确认 `Packages/manifest.json` 中已安装 Unity 版 Newtonsoft.Json：
+在目标 Unity 2019.4 LTS 工程中通过 Package Manager 导入 Bridge：
+
+1. 打开 `Window > Package Manager`。
+2. 点击左上角 `+`。
+3. 选择 `Add package from disk...`。
+4. 选择本仓库中的包描述文件：
+
+```text
+F:\AIProject\Unity2019MCP\Packages\com.yys.unity2019-mcp\package.json
+```
+
+导入后，Bridge 会在 Unity Editor 加载后自动启动，默认监听：
+
+```text
+http://127.0.0.1:8765
+```
+
+也可以通过菜单手动控制：
+
+```text
+Tools > Unity 2019 MCP > Start Bridge
+Tools > Unity 2019 MCP > Stop Bridge
+```
+
+## Unity 包依赖
+
+Bridge 包依赖 Unity 版 Newtonsoft.Json：
 
 ```json
 {
@@ -26,13 +49,7 @@
 }
 ```
 
-3. 等待 Unity 编译 Editor 脚本。
-4. Bridge 会在 Editor 加载后自动启动，也可以通过菜单手动控制：
-
-```text
-Tools > Unity 2019 MCP > Start Bridge
-Tools > Unity 2019 MCP > Stop Bridge
-```
+该依赖已声明在 `Packages/com.yys.unity2019-mcp/package.json` 中。通过 Package Manager 导入本地包时，Unity 会尝试自动解析依赖。
 
 ## MCP Server 设置
 
@@ -89,6 +106,6 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 ## 注意事项
 
 - Unity Editor API 会在 Unity 主线程执行。
-- 脚本文件只能创建在 `Assets/` 下，并且必须以 `.cs` 结尾。
+- 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。
 - `unity_script_attach` 需要等待 Unity 编译完成后，脚本类型才可被挂载。
 - Component 类型名支持完整名称，例如 `UnityEngine.Rigidbody`，也支持短名称，例如 `Rigidbody`。
