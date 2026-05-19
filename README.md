@@ -19,6 +19,70 @@ docs/development-status.md
 docs/mcp-usage-guide.md
 ```
 
+## 快速开始
+
+### 环境要求
+
+- Unity `2019.4 LTS`。
+- Node.js `18` 或更高版本。
+- 一个支持 MCP stdio server 的 AI 客户端。
+
+### 1. 克隆仓库
+
+```bash
+git clone <your-gitee-repo-url>
+cd Unity2019MCP
+```
+
+### 2. 导入 Unity Bridge
+
+在目标 Unity 2019.4 LTS 工程中打开 `Window > Package Manager`，点击左上角 `+`，选择 `Add package from disk...`，然后选择本仓库中的文件：
+
+```text
+Packages/com.yys.unity2019-mcp/package.json
+```
+
+导入后，Bridge 会在 Unity Editor 加载后自动启动，默认监听：
+
+```text
+http://127.0.0.1:8765
+```
+
+也可以通过菜单手动控制：
+
+```text
+Tools > Unity 2019 MCP > Start Bridge
+Tools > Unity 2019 MCP > Stop Bridge
+```
+
+### 3. 安装并构建 MCP Server
+
+```bash
+cd server
+npm install
+npm run build
+```
+
+### 4. 配置 MCP 客户端
+
+在 MCP 客户端中添加 stdio server，启动命令指向构建后的入口文件：
+
+```bash
+node <repo-path>/server/dist/index.js
+```
+
+其中 `<repo-path>` 替换为本仓库在本机的实际路径。启动 MCP 客户端前，请确保 Unity Editor 已打开目标工程，并且 Unity Bridge 正在监听。
+
+### 5. 验证连接
+
+在 MCP 客户端中调用：
+
+```text
+unity_health
+```
+
+如果返回 Bridge 状态信息，说明 MCP Server 已成功连接到 Unity Editor Bridge。
+
 ## 项目约定
 
 - 本项目后续新增或维护的 Markdown 文档统一使用中文编写。
