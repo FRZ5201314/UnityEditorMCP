@@ -30,15 +30,9 @@ Tools > Unity 2019 MCP > Stop Bridge
 
 ## 依赖
 
-包依赖 Unity 版 Newtonsoft.Json：
+本包不声明额外 Unity Package 依赖，也不要求目标工程安装特定 JSON 库。
 
-```json
-{
-  "com.unity.nuget.newtonsoft-json": "2.0.0"
-}
-```
-
-通过 Package Manager 导入本包时，Unity 会根据包的 `dependencies` 尝试解析该依赖。
+为了避免和目标工程中已有的 `JsonDotNet`、`Newtonsoft.Json` 或其他 JSON DLL 冲突，Bridge 内部使用包内轻量 JSON 工具处理 MCP 通信数据。
 
 ## 注意事项
 

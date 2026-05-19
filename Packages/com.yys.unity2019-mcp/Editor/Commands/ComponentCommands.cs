@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Newtonsoft.Json.Linq;
 using Unity2019Mcp.Models;
 using Unity2019Mcp.Utils;
 using UnityEditor;
@@ -225,16 +224,16 @@ namespace Unity2019Mcp.Commands
             {
                 case SerializedPropertyType.Integer:
                 case SerializedPropertyType.LayerMask:
-                    property.intValue = Convert.ToInt32(UnwrapJToken(value));
+                    property.intValue = Convert.ToInt32(value);
                     return;
                 case SerializedPropertyType.Boolean:
-                    property.boolValue = Convert.ToBoolean(UnwrapJToken(value));
+                    property.boolValue = Convert.ToBoolean(value);
                     return;
                 case SerializedPropertyType.Float:
-                    property.floatValue = Convert.ToSingle(UnwrapJToken(value));
+                    property.floatValue = Convert.ToSingle(value);
                     return;
                 case SerializedPropertyType.String:
-                    property.stringValue = value == null ? null : Convert.ToString(UnwrapJToken(value));
+                    property.stringValue = value == null ? null : Convert.ToString(value);
                     return;
                 case SerializedPropertyType.Color:
                     property.colorValue = ReadColor(value);
@@ -254,12 +253,6 @@ namespace Unity2019Mcp.Commands
                 default:
                     throw new McpCommandException("UNSUPPORTED_PROPERTY_TYPE", "Unsupported SerializedProperty type: " + property.propertyType, new { propertyPath = property.propertyPath });
             }
-        }
-
-        private static object UnwrapJToken(object value)
-        {
-            var token = value as JToken;
-            return token == null ? value : token.ToObject<object>();
         }
 
         private static Vector2 ReadVector2(object value)
@@ -300,10 +293,9 @@ namespace Unity2019Mcp.Commands
 
         private static void SetEnumValue(SerializedProperty property, object value)
         {
-            var unwrapped = UnwrapJToken(value);
-            if (unwrapped is string)
+            if (value is string)
             {
-                var text = (string)unwrapped;
+                var text = (string)value;
                 for (var i = 0; i < property.enumDisplayNames.Length; i++)
                 {
                     if (property.enumDisplayNames[i] == text || property.enumNames[i] == text)
@@ -316,21 +308,11 @@ namespace Unity2019Mcp.Commands
                 throw new McpCommandException("INVALID_PARAMS", "Enum value not found: " + text, property.enumDisplayNames);
             }
 
-            property.enumValueIndex = Convert.ToInt32(unwrapped);
+            property.enumValueIndex = Convert.ToInt32(value);
         }
 
         private static float ReadFloatField(object value, string field)
         {
-            var token = value as JToken;
-            if (token != null)
-            {
-                var child = token[field];
-                if (child != null)
-                {
-                    return child.Value<float>();
-                }
-            }
-
             var dictionary = value as IDictionary;
             if (dictionary != null && dictionary.Contains(field))
             {
@@ -342,12 +324,6 @@ namespace Unity2019Mcp.Commands
 
         private static bool HasField(object value, string field)
         {
-            var token = value as JToken;
-            if (token != null)
-            {
-                return token[field] != null;
-            }
-
             var dictionary = value as IDictionary;
             return dictionary != null && dictionary.Contains(field);
         }

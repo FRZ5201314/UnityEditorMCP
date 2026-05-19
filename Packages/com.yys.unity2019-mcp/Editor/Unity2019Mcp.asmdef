@@ -1,8 +1,6 @@
 {
   "name": "Unity2019Mcp.Editor",
-  "references": [
-    "Unity.Newtonsoft.Json"
-  ],
+  "references": [],
   "includePlatforms": [
     "Editor"
   ],
