@@ -1,5 +1,12 @@
 # 更新日志
 
+## 0.6.1
+
+- 新增 Unity 编辑器窗口 `Tools > Unity 2019 MCP`：集中展示 Bridge 监听地址、运行状态、Unity 版本、工程名称与路径，支持启停 Bridge、复制地址、切换 Bridge Permissions 开关。
+- 窗口内嵌 Bridge 日志面板，按消息内容自动换行、动态计算行高，支持按 INFO/WARN/ERROR 过滤、关键字过滤、自动滚动、清空缓冲与打开日志文件。
+- 移除 `Tools > Unity 2019 MCP` 下原有的 `Start Bridge`、`Stop Bridge` 和 `Bridge Permissions` 子菜单项，相关操作改为在编辑器窗口中完成。
+- `BridgeLogger` 增加线程安全的环形内存缓冲区（500 条）和单调序列号，便于窗口轮询新增日志。
+
 ## 0.6.0
 
 - Bridge `/health` 增加 `projectPath`、`productName`、`instanceId` 字段，用于多工程场景下识别 Bridge 所属工程。

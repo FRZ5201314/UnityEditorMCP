@@ -8,12 +8,22 @@ namespace Unity2019Mcp.Bridge
     [InitializeOnLoad]
     public static class McpBridgeServer
     {
-        private const string Host = "127.0.0.1";
-        private const int PreferredPort = 8765;
-        private const int MaxPort = 8775;
+        public const string Host = "127.0.0.1";
+        public const int PreferredPort = 8765;
+        public const int MaxPort = 8775;
         private const int TimeoutMs = 30000;
         private static McpHttpListener _listener;
         private static bool _retryQueued;
+
+        public static bool IsRunning
+        {
+            get { return _listener != null; }
+        }
+
+        public static string CurrentPrefix
+        {
+            get { return _listener != null ? _listener.Prefix : null; }
+        }
 
         static McpBridgeServer()
         {
@@ -32,7 +42,6 @@ namespace Unity2019Mcp.Bridge
             EditorApplication.delayCall += Start;
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Start Bridge")]
         public static void Start()
         {
             if (_listener != null)
@@ -62,7 +71,6 @@ namespace Unity2019Mcp.Bridge
             }
         }
 
-        [MenuItem("Tools/Unity 2019 MCP/Stop Bridge")]
         public static void Stop()
         {
             if (_listener == null)
@@ -74,53 +82,6 @@ namespace Unity2019Mcp.Bridge
             _listener = null;
             BridgeLogger.Info("Bridge stopped.");
             Debug.Log("Unity2019MCP bridge stopped.");
-        }
-
-        private const string PermissionsMenuRoot = "Tools/Unity 2019 MCP/Bridge Permissions/";
-        private const string AllowSceneDeleteMenu = PermissionsMenuRoot + "Allow Scene Object Delete";
-        private const string AllowScriptWriteMenu = PermissionsMenuRoot + "Allow Script Write";
-        private const string AllowAssetDeleteMenu = PermissionsMenuRoot + "Allow Asset Delete";
-
-        [MenuItem(AllowSceneDeleteMenu)]
-        public static void ToggleAllowSceneDelete()
-        {
-            BridgeSettings.AllowSceneDelete = !BridgeSettings.AllowSceneDelete;
-            BridgeLogger.Info("allowSceneDelete set to " + BridgeSettings.AllowSceneDelete);
-        }
-
-        [MenuItem(AllowSceneDeleteMenu, true)]
-        public static bool ValidateAllowSceneDelete()
-        {
-            Menu.SetChecked(AllowSceneDeleteMenu, BridgeSettings.AllowSceneDelete);
-            return true;
-        }
-
-        [MenuItem(AllowScriptWriteMenu)]
-        public static void ToggleAllowScriptWrite()
-        {
-            BridgeSettings.AllowScriptWrite = !BridgeSettings.AllowScriptWrite;
-            BridgeLogger.Info("allowScriptWrite set to " + BridgeSettings.AllowScriptWrite);
-        }
-
-        [MenuItem(AllowScriptWriteMenu, true)]
-        public static bool ValidateAllowScriptWrite()
-        {
-            Menu.SetChecked(AllowScriptWriteMenu, BridgeSettings.AllowScriptWrite);
-            return true;
-        }
-
-        [MenuItem(AllowAssetDeleteMenu)]
-        public static void ToggleAllowAssetDelete()
-        {
-            BridgeSettings.AllowAssetDelete = !BridgeSettings.AllowAssetDelete;
-            BridgeLogger.Info("allowAssetDelete set to " + BridgeSettings.AllowAssetDelete);
-        }
-
-        [MenuItem(AllowAssetDeleteMenu, true)]
-        public static bool ValidateAllowAssetDelete()
-        {
-            Menu.SetChecked(AllowAssetDeleteMenu, BridgeSettings.AllowAssetDelete);
-            return true;
         }
 
         private static void QueueStartRetry()

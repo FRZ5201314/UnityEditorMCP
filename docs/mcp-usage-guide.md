@@ -4,7 +4,7 @@
 
 当前版本：
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.6.0`
+- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.6.1`
 - MCP Server：`unity2019-mcp-server@0.6.0`
 - Unity 目标版本：Unity 2019.4 LTS
 
@@ -48,12 +48,12 @@ F:\AIProject\Unity2019MCP\Packages\com.yys.unity2019-mcp\package.json
 
 导入后，Bridge 会在 Unity Editor 加载时自动启动。
 
-也可以通过菜单手动控制：
+通过菜单 `Tools > Unity 2019 MCP` 打开编辑器窗口，窗口集中展示：
 
-```text
-Tools > Unity 2019 MCP > Start Bridge
-Tools > Unity 2019 MCP > Stop Bridge
-```
+- 当前 Bridge 监听地址、运行状态、Unity 版本、工程名称与路径。
+- 启动 / 停止 Bridge、复制监听地址。
+- Bridge Permissions 三个开关。
+- 实时滚动的 Bridge 日志，支持按级别过滤、关键字过滤、自动滚动、清空缓冲、打开日志文件。
 
 Bridge 日志位置：
 
@@ -292,11 +292,13 @@ unity_bridge_select
 - 已导入 `com.yys.unity2019-mcp` 本地包。
 - 菜单中能看到 `Tools > Unity 2019 MCP`。
 
-如果不确定 Bridge 是否已启动，执行：
+如果不确定 Bridge 是否已启动，打开窗口手动启动：
 
 ```text
-Tools > Unity 2019 MCP > Start Bridge
+Tools > Unity 2019 MCP
 ```
+
+在窗口中点击 `启动 Bridge` 即可。
 
 预期结果：
 
@@ -922,13 +924,13 @@ unity_asset_delete
 
 ## Bridge Permissions
 
-Unity 菜单：
+打开 Unity 编辑器窗口：
 
 ```text
-Tools > Unity 2019 MCP > Bridge Permissions
+Tools > Unity 2019 MCP
 ```
 
-当前开关：
+窗口的 `Bridge Permissions` 区域提供以下开关：
 
 - `Allow Scene Object Delete`：控制 `unity_gameobject_delete` 和 `unity_component_remove`。
 - `Allow Script Write`：控制 `unity_script_create`。
@@ -994,11 +996,7 @@ Library/Unity2019Mcp/bridge.log
 4. `unity_health` 是否可返回。
 5. `Library/Unity2019Mcp/bridge.log` 是否有启动记录。
 
-可以在 Unity 菜单中手动执行：
-
-```text
-Tools > Unity 2019 MCP > Start Bridge
-```
+可以打开 `Tools > Unity 2019 MCP` 窗口，点 `启动 Bridge` 手动启动。
 
 ### 端口 8765 被占用
 

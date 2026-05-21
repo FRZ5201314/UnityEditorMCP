@@ -76,7 +76,7 @@ export class BridgeRegistry {
     if (entries.length === 0) {
       throw new BridgeError(
         "BRIDGE_UNAVAILABLE",
-        `No Unity bridge found in range ${this.probeRange()}. Open the Unity project and ensure Tools > Unity 2019 MCP > Start Bridge is running.`,
+        `No Unity bridge found in range ${this.probeRange()}. Open the Unity project and ensure the bridge is running via the Tools > Unity 2019 MCP window.`,
       );
     }
 

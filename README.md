@@ -48,12 +48,7 @@ Packages/com.yys.unity2019-mcp/package.json
 http://127.0.0.1:8765
 ```
 
-也可以通过菜单手动控制：
-
-```text
-Tools > Unity 2019 MCP > Start Bridge
-Tools > Unity 2019 MCP > Stop Bridge
-```
+通过菜单 `Tools > Unity 2019 MCP` 打开编辑器窗口，集中管理 Bridge 启停、Permissions 开关并实时查看 Bridge 日志。
 
 ### 3. 安装并构建 MCP Server
 
@@ -109,12 +104,7 @@ F:\AIProject\Unity2019MCP\Packages\com.yys.unity2019-mcp\package.json
 http://127.0.0.1:8765
 ```
 
-也可以通过菜单手动控制：
-
-```text
-Tools > Unity 2019 MCP > Start Bridge
-Tools > Unity 2019 MCP > Stop Bridge
-```
+打开 `Tools > Unity 2019 MCP` 编辑器窗口，可以查看监听地址、启停 Bridge 和切换 Permissions 开关。
 
 ## Unity 包依赖
 
@@ -205,7 +195,7 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 - MCP Server 默认会自动探测 `127.0.0.1:8765-8775` 上的 Bridge。
 - 同时打开多个 Unity 工程时，Bridge 会落到不同端口，MCP Server 会按 `UNITY_MCP_PROJECT_PATH` / `UNITY_MCP_PROJECT_NAME` / 当前工作目录推断目标工程；详见 `docs/mcp-usage-guide.md` 中的"多工程路由"小节。
 - Bridge 日志写入 `Library/Unity2019Mcp/bridge.log`。
-- `Tools > Unity 2019 MCP > Bridge Permissions` 下的开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
+- `Tools > Unity 2019 MCP` 编辑器窗口中的 Permissions 开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
 - `Allow Scene Object Delete` 控制 `unity_gameobject_delete` 和 `unity_component_remove`，`Allow Asset Delete` 控制 `unity_asset_delete`，`Allow Script Write` 控制 `unity_script_create`。
 - 脚本编译会触发 Unity 域重载，Bridge 会在重载完成后自动恢复监听。
 - 脚本文件只能创建在目标 Unity 工程的 `Assets/` 下，并且必须以 `.cs` 结尾。

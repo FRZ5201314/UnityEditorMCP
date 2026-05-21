@@ -35,26 +35,17 @@
 
 这些开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
 
-1. 在 Unity 菜单中关闭：
-
-```text
-Tools > Unity 2019 MCP > Bridge Permissions > Allow Scene Object Delete
-```
+1. 打开 Unity 编辑器窗口 `Tools > Unity 2019 MCP`，在 `Bridge Permissions` 区域取消勾选 `Allow Scene Object Delete`。
 
 2. 调用 `unity_gameobject_delete` 删除任意测试对象。
 
 预期结果：返回 `OPERATION_BLOCKED`。
 
-3. 重新打开 `Allow Scene Object Delete`，再次调用删除。
+3. 重新勾选 `Allow Scene Object Delete`，再次调用删除。
 
 预期结果：删除恢复正常。
 
-4. 依次验证：
-
-```text
-Tools > Unity 2019 MCP > Bridge Permissions > Allow Script Write
-Tools > Unity 2019 MCP > Bridge Permissions > Allow Asset Delete
-```
+4. 依次切换 `Allow Script Write`、`Allow Asset Delete`，分别验证：
 
 预期结果：关闭后，`unity_script_create` 和 `unity_asset_delete` 分别返回 `OPERATION_BLOCKED`。
 
