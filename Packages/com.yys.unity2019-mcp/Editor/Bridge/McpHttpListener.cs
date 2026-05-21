@@ -37,6 +37,7 @@ namespace Unity2019Mcp.Bridge
         private static readonly object CapturedLogsLock = new object();
         private static readonly System.Collections.Generic.List<CapturedLog> CapturedLogs = new System.Collections.Generic.List<CapturedLog>();
         private static bool _logCaptureInitialized;
+        private static readonly string InstanceId = Guid.NewGuid().ToString("N");
 
         public McpHttpListener(string host, int port, int timeoutMs)
         {
@@ -103,13 +104,23 @@ namespace Unity2019Mcp.Bridge
                 if (context.Request.HttpMethod == "GET" && context.Request.Url.AbsolutePath == "/health")
                 {
                     var health = MainThreadDispatcher.Invoke(
-                        () => new
+                        () =>
                         {
-                            ok = true,
-                            service = "Unity2019MCP",
-                            unityVersion = Application.unityVersion,
-                            bridgeUrl = _prefix,
-                            config = BridgeSettings.ToDto()
+                            var dataPath = Application.dataPath;
+                            var projectPath = dataPath.EndsWith("/Assets")
+                                ? dataPath.Substring(0, dataPath.Length - "/Assets".Length)
+                                : dataPath;
+                            return new
+                            {
+                                ok = true,
+                                service = "Unity2019MCP",
+                                unityVersion = Application.unityVersion,
+                                bridgeUrl = _prefix,
+                                projectPath = projectPath,
+                                productName = Application.productName,
+                                instanceId = InstanceId,
+                                config = BridgeSettings.ToDto()
+                            };
                         },
                         _timeoutMs);
                     WriteJson(context, 200, health);

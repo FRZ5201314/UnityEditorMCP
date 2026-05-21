@@ -1,5 +1,10 @@
 # 更新日志
 
+## 0.6.0
+
+- Bridge `/health` 增加 `projectPath`、`productName`、`instanceId` 字段，用于多工程场景下识别 Bridge 所属工程。
+- 配合新版 MCP Server 的多工程路由能力：同时打开多个 Unity 工程时，Server 可按工程路径或工程名定位到正确 Bridge。
+
 ## 0.5.2
 
 - 将 Unity 菜单 `Safety` 改名为 `Bridge Permissions`，明确这些开关只限制 MCP Bridge 命令入口。

@@ -145,6 +145,8 @@ UNITY_MCP_AUTO_DETECT=true
 UNITY_MCP_DETECT_HOST=127.0.0.1
 UNITY_MCP_DETECT_PORT_START=8765
 UNITY_MCP_DETECT_PORT_END=8775
+UNITY_MCP_PROJECT_PATH=
+UNITY_MCP_PROJECT_NAME=
 ```
 
 ## MCP 客户端配置示例
@@ -160,6 +162,9 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 ## 工具列表
 
 - `unity_health`
+- `unity_bridge_list`
+- `unity_bridge_select`
+- `unity_bridge_current`
 - `unity_bridge_get_config`
 - `unity_bridge_get_log_path`
 - `unity_project_get_info`
@@ -198,6 +203,7 @@ node F:\AIProject\Unity2019MCP\server\dist\index.js
 - Unity Editor API 会在 Unity 主线程执行。
 - Bridge 默认监听端口被占用时会尝试 `8765-8775`。
 - MCP Server 默认会自动探测 `127.0.0.1:8765-8775` 上的 Bridge。
+- 同时打开多个 Unity 工程时，Bridge 会落到不同端口，MCP Server 会按 `UNITY_MCP_PROJECT_PATH` / `UNITY_MCP_PROJECT_NAME` / 当前工作目录推断目标工程；详见 `docs/mcp-usage-guide.md` 中的"多工程路由"小节。
 - Bridge 日志写入 `Library/Unity2019Mcp/bridge.log`。
 - `Tools > Unity 2019 MCP > Bridge Permissions` 下的开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
 - `Allow Scene Object Delete` 控制 `unity_gameobject_delete` 和 `unity_component_remove`，`Allow Asset Delete` 控制 `unity_asset_delete`，`Allow Script Write` 控制 `unity_script_create`。

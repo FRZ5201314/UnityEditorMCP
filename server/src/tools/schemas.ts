@@ -111,3 +111,10 @@ export const assetCreateFolderSchema = {
   parentPath: z.string().optional(),
   name: z.string().min(1),
 };
+
+export const bridgeSelectSchema = {
+  url: z.string().min(1).optional(),
+  projectPath: z.string().min(1).optional(),
+  projectName: z.string().min(1).optional(),
+  instanceId: z.string().min(1).optional(),
+};

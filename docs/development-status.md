@@ -11,8 +11,8 @@
 
 ## 当前版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.5.2`
-- MCP Server：`unity2019-mcp-server@0.5.2`
+- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.6.0`
+- MCP Server：`unity2019-mcp-server@0.6.0`
 - Unity 目标版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 
@@ -133,9 +133,21 @@ server/
 
 说明：`Bridge Permissions` 只限制 MCP Bridge 暴露的命令入口，不限制 Codex、Shell、Unity UI 或文件系统层面的其他操作路径。
 
+### P4：多工程路由
+
+支持同时打开多个 Unity 工程的场景：
+
+- Bridge `/health` 返回 `projectPath`、`productName`、`instanceId`，让 MCP Server 识别 Bridge 所属工程。已实现。
+- MCP Server 并发探测端口范围内的所有 Bridge，按显式环境变量 → CWD 推断 → 唯一在线 Bridge 的优先级路由。已实现。
+- 多 Bridge 在线且没有规则命中时返回 `BRIDGE_AMBIGUOUS`，错误信息列出所有候选。已实现。
+- 新增工具 `unity_bridge_list`、`unity_bridge_select`、`unity_bridge_current`，用于查询和运行时切换目标 Bridge。已实现。
+- Bridge 重启或端口漂移时，命令失败会自动重新发现并切换。已实现。
+
+第六阶段已完成代码实现，并已由用户手动验收。
+
 ## 阶段完成结论
 
-当前规划的第一至第五阶段均已完成代码实现，并已通过用户手动验收。
+当前规划的第一至第六阶段均已完成代码实现，并已通过用户手动验收。
 
 ## 常用验证命令
 

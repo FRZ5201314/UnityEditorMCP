@@ -5,6 +5,7 @@ import {
   assetCreateFolderSchema,
   assetFindSchema,
   assetPathSchema,
+  bridgeSelectSchema,
   componentPropertyGetSchema,
   componentPropertySetSchema,
   componentSchema,
@@ -26,6 +27,9 @@ type ToolSchema = Parameters<McpServer["tool"]>[2];
 
 export function registerTools(server: McpServer, bridge: UnityBridgeClient): void {
   register(server, bridge, "unity_health", "Check whether the Unity Editor bridge is reachable.", emptySchema, async () => bridge.health());
+  register(server, bridge, "unity_bridge_list", "List all Unity bridges discovered on the configured port range.", emptySchema, async () => bridge.listBridges());
+  register(server, bridge, "unity_bridge_select", "Bind the current MCP session to a specific Unity bridge.", bridgeSelectSchema, async args => bridge.selectBridge(args));
+  register(server, bridge, "unity_bridge_current", "Get the Unity bridge currently bound to this MCP session.", emptySchema, async () => bridge.describeCurrent());
   register(server, bridge, "unity_bridge_get_config", "Get Unity bridge safety configuration.", emptySchema, async () => bridge.command("bridge.getConfig"));
   register(server, bridge, "unity_bridge_get_log_path", "Get Unity bridge log file path.", emptySchema, async () => bridge.command("bridge.getLogPath"));
   register(server, bridge, "unity_project_get_info", "Get Unity version and current project information.", emptySchema, async () => bridge.command("project.getInfo"));
