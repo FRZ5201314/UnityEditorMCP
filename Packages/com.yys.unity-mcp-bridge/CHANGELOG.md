@@ -1,9 +1,14 @@
 # 更新日志
 
+## 0.6.2
+
+- MCP Server npm 包改为 `@luoluo123/unity-mcp-server`，匹配当前 npm 发布账号。
+- 文档中的 UPM Git 安装版本更新为 `v0.6.2`。
+
 ## 0.6.1
 
 - Unity Bridge 推荐通过 UPM Git URL 安装，包路径为 `Packages/com.yys.unity-mcp-bridge`。
-- MCP Server 独立为 npm 包 `@yys/unity-mcp-server`，客户端可通过 `npx` 启动。
+- MCP Server 独立为 npm 包，客户端可通过 `npx` 启动。
 - 新增 Unity 编辑器窗口 `Tools > Unity MCP`：集中展示 Bridge 监听地址、运行状态、Unity 版本、工程名称与路径，支持启停 Bridge、复制地址、切换 Bridge Permissions 开关。
 - 窗口内嵌 Bridge 日志面板，按消息内容自动换行、动态计算行高，支持按 INFO/WARN/ERROR 过滤、关键字过滤、自动滚动、清空缓冲与打开日志文件。
 - 移除 `Tools > Unity MCP` 下原有的 `Start Bridge`、`Stop Bridge` 和 `Bridge Permissions` 子菜单项，相关操作改为在编辑器窗口中完成。

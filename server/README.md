@@ -1,4 +1,4 @@
-# @yys/unity-mcp-server
+# @luoluo123/unity-mcp-server
 
 这是 Unity MCP 的 MCP stdio server，负责把 MCP tool 调用转发到 Unity Editor Bridge。
 
@@ -7,7 +7,7 @@
 MCP 客户端推荐通过 `npx` 启动：
 
 ```bash
-npx -y @yys/unity-mcp-server@0.6.1
+npx -y @luoluo123/unity-mcp-server@0.6.2
 ```
 
 默认会自动探测本机 `127.0.0.1:8765-8775` 范围内的 Unity Bridge。
@@ -22,7 +22,7 @@ npx -y @yys/unity-mcp-server@0.6.1
   "command": "npx",
   "args": [
     "-y",
-    "@yys/unity-mcp-server@0.6.1"
+    "@luoluo123/unity-mcp-server@0.6.2"
   ],
   "env": {
     "UNITY_MCP_AUTO_DETECT": "true",

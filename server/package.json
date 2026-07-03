@@ -1,6 +1,6 @@
 {
-  "name": "@yys/unity-mcp-server",
-  "version": "0.6.1",
+  "name": "@luoluo123/unity-mcp-server",
+  "version": "0.6.2",
   "description": "MCP stdio server for Unity Editor MCP Bridge.",
   "type": "module",
   "bin": {

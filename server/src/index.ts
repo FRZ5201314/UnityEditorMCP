@@ -26,7 +26,7 @@ async function main(): Promise<void> {
   const bridge = new UnityBridgeClient(registry, config.timeoutMs);
   const server = new McpServer({
     name: "unity-mcp",
-    version: "0.6.1",
+    version: "0.6.2",
   });
 
   registerTools(server, bridge);

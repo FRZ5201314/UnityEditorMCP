@@ -12,13 +12,13 @@
 4. 输入 Gitee 地址：
 
 ```text
-https://gitee.com/furanzhang/unity-editor-mcp.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.1
+https://gitee.com/furanzhang/unity-editor-mcp.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.2
 ```
 
 也可以使用 GitHub 地址：
 
 ```text
-https://github.com/FRZ5201314/UnityEditorMCP.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.1
+https://github.com/FRZ5201314/UnityEditorMCP.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.2
 ```
 
 导入后，Bridge 会在 Editor 加载后自动启动，默认监听：
