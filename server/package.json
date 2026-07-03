@@ -1,10 +1,10 @@
 {
-  "name": "unity2019-mcp-server",
+  "name": "@yys/unity-mcp-server",
   "version": "0.6.0",
   "private": true,
   "type": "module",
   "bin": {
-    "unity2019-mcp": "dist/index.js"
+    "unity-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

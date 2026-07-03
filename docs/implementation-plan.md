@@ -1,8 +1,8 @@
-# Unity 2019.4 LTS MCP 实现方案
+# Unity MCP 实现方案
 
 ## 目标
 
-实现一个明确适配 Unity 2019.4 LTS 的 MCP，用于让支持 MCP 的 AI 客户端稳定地操作 Unity Editor。
+实现一个最低兼容 Unity 2019.4 LTS 的 MCP，用于让支持 MCP 的 AI 客户端稳定地操作 Unity Editor。
 
 核心目标不是只做文件操作，而是提供 Unity Editor 场景级能力：
 
@@ -81,7 +81,7 @@ Unity 2019.4 LTS Project
 UnityProject/
   Assets/
     Editor/
-      Unity2019Mcp/
+      UnityMcp/
         Bridge/
         Commands/
         Models/
@@ -402,8 +402,8 @@ Unity Bridge：
 建议结构：
 
 ```text
-Assets/Editor/Unity2019Mcp/
-  Unity2019Mcp.asmdef
+Assets/Editor/UnityMcp/
+  UnityMcp.Editor.asmdef
   Bridge/
     McpBridgeServer.cs
     McpHttpListener.cs

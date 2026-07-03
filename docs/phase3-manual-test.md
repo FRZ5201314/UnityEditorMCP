@@ -4,7 +4,7 @@
 
 ## 前置条件
 
-- 目标 Unity 工程已通过 Package Manager 导入 `com.yys.unity2019-mcp`。
+- 目标 Unity 工程已通过 Package Manager 导入 `com.yys.unity-mcp-bridge`。
 - Unity Console 无编译错误。
 - Bridge 已启动，`unity_health` 可正常返回。
 - MCP Server 已构建并在 MCP 客户端中可用。

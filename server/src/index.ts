@@ -25,7 +25,7 @@ async function main(): Promise<void> {
   });
   const bridge = new UnityBridgeClient(registry, config.timeoutMs);
   const server = new McpServer({
-    name: "unity2019-mcp",
+    name: "unity-mcp",
     version: "0.6.0",
   });
 

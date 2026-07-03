@@ -1,27 +1,27 @@
-# Unity 2019 MCP
+# Unity Editor MCP
 
-让支持 MCP 的 AI 客户端稳定操作 Unity 2019.4 LTS Editor。
+让支持 MCP 的 AI 客户端稳定操作 Unity Editor，最低兼容 Unity 2019.4 LTS。
 
 本项目包含两部分：
 
-- `Packages/com.yys.unity2019-mcp/`：Unity Editor Bridge，本地 UPM 包，运行在 Unity Editor 内。
+- `Packages/com.yys.unity-mcp-bridge/`：Unity Editor Bridge，本地 UPM 包，运行在 Unity Editor 内。
 - `server/`：Node.js + TypeScript MCP stdio server，连接 AI 客户端与 Unity Bridge。
 
 ## 特性
 
-- 兼容 Unity `2019.4 LTS`。
+- 最低兼容 Unity `2019.4 LTS`，支持更高版本。
 - Bridge 在 Unity Editor 加载后自动启动。
 - 默认监听 `127.0.0.1:8765`，端口占用时自动回退到 `8766-8775`。
 - MCP Server 支持自动探测多个 Unity Bridge。
 - 支持多 Unity 工程路由：按工程路径、工程名、当前工作目录或运行时选择目标工程。
 - 提供层级、场景、GameObject、Transform、Component、Asset、Prefab、脚本创建与挂载等常用工具。
-- Unity 编辑器内置 `Tools > Unity 2019 MCP` 窗口，可查看状态、日志和权限开关。
+- Unity 编辑器内置 `Tools > Unity MCP` 窗口，可查看状态、日志和权限开关。
 
 ## 版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.6.1`
-- MCP Server：`unity2019-mcp-server@0.6.0`
-- Unity 目标版本：`2019.4 LTS`
+- Unity 本地 UPM 包：`com.yys.unity-mcp-bridge@0.6.1`
+- MCP Server：`@yys/unity-mcp-server@0.6.0`
+- Unity 最低兼容版本：`2019.4 LTS`
 - Node.js 要求：`18` 或更高版本
 
 ## 快速开始
@@ -30,12 +30,12 @@
 
 ```bash
 git clone <your-repo-url>
-cd Unity2019MCP
+cd unity-editor-mcp
 ```
 
 ### 2. 导入 Unity Bridge
 
-在目标 Unity 2019.4 LTS 工程中打开：
+在 Unity 2019.4 LTS 或更高版本工程中打开：
 
 ```text
 Window > Package Manager > + > Add package from disk...
@@ -44,13 +44,13 @@ Window > Package Manager > + > Add package from disk...
 选择本仓库中的包描述文件：
 
 ```text
-Packages/com.yys.unity2019-mcp/package.json
+Packages/com.yys.unity-mcp-bridge/package.json
 ```
 
 导入后 Bridge 会自动启动。也可以在 Unity 菜单中打开：
 
 ```text
-Tools > Unity 2019 MCP
+Tools > Unity MCP
 ```
 
 该窗口可查看监听地址、运行状态、工程信息、权限开关和 Bridge 日志。
@@ -72,7 +72,7 @@ npm run build
 例如：
 
 ```text
-F:\AIProject\Unity2019MCP\server\dist\index.js
+<repo-path>\server\dist\index.js
 ```
 
 ### 4. 配置 CC Switch
@@ -84,7 +84,7 @@ F:\AIProject\Unity2019MCP\server\dist\index.js
   "type": "stdio",
   "command": "node",
   "args": [
-    "F:\\AIProject\\Unity2019MCP\\server\\dist\\index.js"
+    "<repo-path>\\server\\dist\\index.js"
   ],
   "env": {
     "UNITY_MCP_AUTO_DETECT": "true",
@@ -201,10 +201,10 @@ Unity 工程与场景：
 Bridge 日志写入目标 Unity 工程：
 
 ```text
-Library/Unity2019Mcp/bridge.log
+Library/UnityMcp/bridge.log
 ```
 
-`Tools > Unity 2019 MCP` 中的权限开关：
+`Tools > Unity MCP` 中的权限开关：
 
 - `Allow Scene Object Delete`：控制 `unity_gameobject_delete` 和 `unity_component_remove`。
 - `Allow Asset Delete`：控制 `unity_asset_delete`。

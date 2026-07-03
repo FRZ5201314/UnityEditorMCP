@@ -4,7 +4,7 @@
 
 ## 前置条件
 
-- 目标 Unity 工程已通过 Package Manager 导入 `com.yys.unity2019-mcp`。
+- 目标 Unity 工程已通过 Package Manager 导入 `com.yys.unity-mcp-bridge`。
 - Unity Console 无编译错误。
 - Bridge 已启动，`unity_health` 可正常返回。
 - MCP Server 已构建并在 MCP 客户端中可用。
@@ -25,7 +25,7 @@
 {}
 ```
 
-预期结果：返回 `Library/Unity2019Mcp/bridge.log`。
+预期结果：返回 `Library/UnityMcp/bridge.log`。
 
 3. 调用任意工具后检查日志文件。
 
@@ -35,7 +35,7 @@
 
 这些开关只限制 MCP Bridge 命令本身，不是 Codex、Shell、Unity UI 或文件系统层面的全局安全边界。
 
-1. 打开 Unity 编辑器窗口 `Tools > Unity 2019 MCP`，在 `Bridge Permissions` 区域取消勾选 `Allow Scene Object Delete`。
+1. 打开 Unity 编辑器窗口 `Tools > Unity MCP`，在 `Bridge Permissions` 区域取消勾选 `Allow Scene Object Delete`。
 
 2. 调用 `unity_gameobject_delete` 删除任意测试对象。
 

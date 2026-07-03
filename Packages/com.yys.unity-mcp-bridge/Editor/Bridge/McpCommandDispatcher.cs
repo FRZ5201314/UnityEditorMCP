@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityMcp.Commands;
+using UnityMcp.Models;
+using UnityMcp.Utils;
+
+namespace UnityMcp.Bridge
+{
+    public static class McpCommandDispatcher
+    {
+        private static readonly Dictionary<string, Func<Dictionary<string, object>, object>> Handlers =
+            new Dictionary<string, Func<Dictionary<string, object>, object>>
+            {
+                { "project.getInfo", ProjectCommands.GetInfo },
+                { "bridge.getConfig", BridgeCommands.GetConfig },
+                { "bridge.getLogPath", BridgeCommands.GetLogPath },
+                { "scene.getActive", SceneCommands.GetActive },
+                { "scene.new", SceneCommands.New },
+                { "scene.open", SceneCommands.Open },
+                { "scene.save", SceneCommands.Save },
+                { "scene.saveAs", SceneCommands.SaveAs },
+                { "scene.getDirty", SceneCommands.GetDirty },
+                { "hierarchy.list", HierarchyCommands.List },
+                { "gameObject.create", GameObjectCommands.Create },
+                { "gameObject.delete", GameObjectCommands.Delete },
+                { "gameObject.rename", GameObjectCommands.Rename },
+                { "gameObject.find", GameObjectCommands.Find },
+                { "transform.get", TransformCommands.Get },
+                { "transform.set", TransformCommands.Set },
+                { "component.list", ComponentCommands.List },
+                { "component.add", ComponentCommands.Add },
+                { "component.remove", ComponentCommands.Remove },
+                { "component.get", ComponentCommands.Get },
+                { "component.getProperty", ComponentCommands.GetProperty },
+                { "component.setProperty", ComponentCommands.SetProperty },
+                { "script.create", ScriptCommands.Create },
+                { "script.attach", ScriptCommands.Attach },
+                { "asset.refresh", AssetCommands.Refresh },
+                { "asset.find", AssetCommands.Find },
+                { "asset.load", AssetCommands.Load },
+                { "asset.createFolder", AssetCommands.CreateFolder },
+                { "asset.delete", AssetCommands.Delete },
+                { "prefab.create", PrefabCommands.Create },
+                { "prefab.instantiate", PrefabCommands.Instantiate },
+                { "prefab.apply", PrefabCommands.Apply }
+            };
+
+        public static McpCommandResponse Execute(McpCommandRequest request)
+        {
+            if (request == null)
+            {
+                return McpCommandResponse.Fail(null, "INVALID_PARAMS", "Request body is invalid.", null);
+            }
+
+            if (string.IsNullOrEmpty(request.command) || !Handlers.ContainsKey(request.command))
+            {
+                return McpCommandResponse.Fail(request.id, "COMMAND_NOT_FOUND", "Command not found: " + request.command, null);
+            }
+
+            try
+            {
+                var blocked = GetBlockedReason(request.command);
+                if (blocked != null)
+                {
+                    return McpCommandResponse.Fail(request.id, "OPERATION_BLOCKED", blocked, BridgeSettings.ToDto());
+                }
+
+                var result = Handlers[request.command](request.@params ?? new Dictionary<string, object>());
+                return McpCommandResponse.Success(request.id, result);
+            }
+            catch (ArgumentException ex)
+            {
+                return McpCommandResponse.Fail(request.id, "INVALID_PARAMS", ex.Message, null);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                var message = ex.Message;
+                var code = message.IndexOf("Component", StringComparison.OrdinalIgnoreCase) >= 0 ? "COMPONENT_NOT_FOUND" : "OBJECT_NOT_FOUND";
+                return McpCommandResponse.Fail(request.id, code, message, null);
+            }
+            catch (TypeLoadException ex)
+            {
+                return McpCommandResponse.Fail(request.id, "TYPE_NOT_FOUND", ex.Message, null);
+            }
+            catch (AmbiguousMatchException ex)
+            {
+                var parts = ex.Message.Split('|');
+                return McpCommandResponse.Fail(request.id, "TYPE_AMBIGUOUS", parts[0], parts.Length > 1 ? parts[1].Split(';') : null);
+            }
+            catch (McpCommandException ex)
+            {
+                return McpCommandResponse.Fail(request.id, ex.code, ex.Message, ex.details);
+            }
+            catch (Exception ex)
+            {
+                return McpCommandResponse.Fail(request.id, "OPERATION_FAILED", ex.Message, ex.ToString());
+            }
+        }
+
+        private static string GetBlockedReason(string command)
+        {
+            if (!BridgeSettings.AllowSceneDelete && (command == "gameObject.delete" || command == "component.remove"))
+            {
+                return "Scene object delete operations are disabled by Unity MCP bridge command permissions.";
+            }
+
+            if (!BridgeSettings.AllowScriptWrite && command == "script.create")
+            {
+                return "Script write operations are disabled by Unity MCP bridge command permissions.";
+            }
+
+            if (!BridgeSettings.AllowAssetDelete && command == "asset.delete")
+            {
+                return "Asset delete operations are disabled by Unity MCP bridge command permissions.";
+            }
+
+            return null;
+        }
+    }
+}

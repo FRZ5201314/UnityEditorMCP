@@ -1,0 +1,17 @@
+{
+  "name": "com.yys.unity-mcp-bridge",
+  "version": "0.6.1",
+  "displayName": "Unity MCP Bridge",
+  "description": "Unity 2019.4 LTS and newer compatible Editor bridge for Unity MCP.",
+  "unity": "2019.4",
+  "author": {
+    "name": "yys"
+  },
+  "dependencies": {},
+  "keywords": [
+    "mcp",
+    "editor",
+    "automation",
+    "unity"
+  ]
+}

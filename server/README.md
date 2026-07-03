@@ -1,6 +1,6 @@
-# unity2019-mcp-server
+# @yys/unity-mcp-server
 
-这是 Unity 2019 MCP 的 MCP stdio server，负责把 MCP tool 调用转发到 Unity Editor Bridge。
+这是 Unity MCP 的 MCP stdio server，负责把 MCP tool 调用转发到 Unity Editor Bridge。
 
 ## 安装与构建
 
@@ -32,4 +32,4 @@ UNITY_MCP_DETECT_PORT_START=8765
 UNITY_MCP_DETECT_PORT_END=8775
 ```
 
-运行 server 前，需要先在目标 Unity 工程中通过 Package Manager 导入并启动 `com.yys.unity2019-mcp`。
+运行 server 前，需要先在目标 Unity 工程中通过 Package Manager 导入并启动 `com.yys.unity-mcp-bridge`。

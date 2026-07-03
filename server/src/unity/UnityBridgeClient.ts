@@ -147,7 +147,7 @@ export class UnityBridgeClient {
       const message = error instanceof Error ? error.message : String(error);
       throw new BridgeError(
         "BRIDGE_UNAVAILABLE",
-        `Could not reach Unity bridge at ${url}. Open the Unity project and start the bridge from the Tools > Unity 2019 MCP window. ${message}`,
+        `Could not reach Unity bridge at ${url}. Open the Unity project and start the bridge from the Tools > Unity MCP window. ${message}`,
       );
     } finally {
       clearTimeout(timeout);

@@ -11,9 +11,9 @@
 
 ## 当前版本
 
-- Unity 本地 UPM 包：`com.yys.unity2019-mcp@0.6.1`
-- MCP Server：`unity2019-mcp-server@0.6.0`
-- Unity 目标版本：Unity 2019.4 LTS
+- Unity 本地 UPM 包：`com.yys.unity-mcp-bridge@0.6.1`
+- MCP Server：`@yys/unity-mcp-server@0.6.0`
+- Unity 最低兼容版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 
 ## 已完成内容
@@ -23,7 +23,7 @@
 - Unity Bridge 已迁移为本地 UPM 包：
 
 ```text
-Packages/com.yys.unity2019-mcp/package.json
+Packages/com.yys.unity-mcp-bridge/package.json
 ```
 
 - MCP Server 位于：
@@ -125,7 +125,7 @@ server/
 
 - 命令白名单与 Bridge 命令权限控制。已实现部分高风险 MCP 命令拦截。
 - 删除、脚本写入等 MCP Bridge 命令的权限开关。已实现 Unity 菜单开关。
-- 日志文件。已实现 `Library/Unity2019Mcp/bridge.log`。
+- 日志文件。已实现 `Library/UnityMcp/bridge.log`。
 - Bridge 端口冲突处理。已实现 `8765-8775` 端口回退。
 - MCP Server 自动探测 Bridge。已实现本地端口扫描。
 
@@ -175,9 +175,9 @@ rtk git status --short
 - MCP 使用说明：`docs/mcp-usage-guide.md`
 - 当前进度：`docs/development-status.md`
 - 第二阶段手动验收：`docs/phase2-manual-test.md`
-- Unity 包变更日志：`Packages/com.yys.unity2019-mcp/CHANGELOG.md`
-- Unity Bridge 入口：`Packages/com.yys.unity2019-mcp/Editor/Bridge/McpBridgeServer.cs`
-- HTTP Bridge：`Packages/com.yys.unity2019-mcp/Editor/Bridge/McpHttpListener.cs`
-- 脚本命令：`Packages/com.yys.unity2019-mcp/Editor/Commands/ScriptCommands.cs`
+- Unity 包变更日志：`Packages/com.yys.unity-mcp-bridge/CHANGELOG.md`
+- Unity Bridge 入口：`Packages/com.yys.unity-mcp-bridge/Editor/Bridge/McpBridgeServer.cs`
+- HTTP Bridge：`Packages/com.yys.unity-mcp-bridge/Editor/Bridge/McpHttpListener.cs`
+- 脚本命令：`Packages/com.yys.unity-mcp-bridge/Editor/Commands/ScriptCommands.cs`
 - MCP 工具注册：`server/src/tools/registerTools.ts`
 - MCP 参数 schema：`server/src/tools/schemas.ts`
