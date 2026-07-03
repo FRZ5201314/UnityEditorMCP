@@ -20,31 +20,30 @@
 ## 版本
 
 - Unity 本地 UPM 包：`com.yys.unity-mcp-bridge@0.6.1`
-- MCP Server：`@yys/unity-mcp-server@0.6.0`
+- MCP Server：`@yys/unity-mcp-server@0.6.1`
 - Unity 最低兼容版本：`2019.4 LTS`
 - Node.js 要求：`18` 或更高版本
 
 ## 快速开始
 
-### 1. 克隆仓库
-
-```bash
-git clone <your-repo-url>
-cd unity-editor-mcp
-```
-
-### 2. 导入 Unity Bridge
+### 1. 安装 Unity Bridge
 
 在 Unity 2019.4 LTS 或更高版本工程中打开：
 
 ```text
-Window > Package Manager > + > Add package from disk...
+Window > Package Manager > + > Add package from git URL...
 ```
 
-选择本仓库中的包描述文件：
+输入 Gitee 地址：
 
 ```text
-Packages/com.yys.unity-mcp-bridge/package.json
+https://gitee.com/furanzhang/unity-editor-mcp.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.1
+```
+
+也可以使用 GitHub 地址：
+
+```text
+https://github.com/FRZ5201314/UnityEditorMCP.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.1
 ```
 
 导入后 Bridge 会自动启动。也可以在 Unity 菜单中打开：
@@ -55,36 +54,18 @@ Tools > Unity MCP
 
 该窗口可查看监听地址、运行状态、工程信息、权限开关和 Bridge 日志。
 
-### 3. 构建 MCP Server
+### 2. 配置 MCP Server
 
-```bash
-cd server
-npm install
-npm run build
-```
-
-构建后的入口文件：
-
-```text
-<repo-path>/server/dist/index.js
-```
-
-例如：
-
-```text
-<repo-path>\server\dist\index.js
-```
-
-### 4. 配置 CC Switch
-
-下面是 CC Switch 可直接使用的完整 JSON 配置。其他用户通常只需要修改 `args` 中的仓库路径即可。
+MCP Server 已独立发布为 npm 包，MCP 客户端可以通过 `npx` 启动。
+下面是 CC Switch 可直接使用的完整 JSON 配置。
 
 ```json
 {
   "type": "stdio",
-  "command": "node",
+  "command": "npx",
   "args": [
-    "<repo-path>\\server\\dist\\index.js"
+    "-y",
+    "@yys/unity-mcp-server@0.6.1"
   ],
   "env": {
     "UNITY_MCP_AUTO_DETECT": "true",
@@ -99,7 +80,7 @@ npm run build
 
 多工程场景推荐使用上面的自动探测配置。不要在该配置中设置 `UNITY_MCP_BRIDGE_URL`，否则 MCP Server 会跳过工程发现逻辑，只连接固定端口。
 
-### 5. 验证连接
+### 3. 验证连接
 
 启动 Unity Editor 和 CC Switch / Codex 后，调用：
 

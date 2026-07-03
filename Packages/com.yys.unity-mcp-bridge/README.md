@@ -2,17 +2,23 @@
 
 这是 Unity MCP 的 Unity Editor Bridge 本地 UPM 包。
 
-## 本地导入
+## Git 安装
 
 在 Unity 2019.4 LTS 或更高版本工程中执行：
 
 1. 打开 `Window > Package Manager`。
 2. 点击左上角 `+`。
-3. 选择 `Add package from disk...`。
-4. 选择本仓库中的文件：
+3. 选择 `Add package from git URL...`。
+4. 输入 Gitee 地址：
 
 ```text
-<repo-path>\Packages\com.yys.unity-mcp-bridge\package.json
+https://gitee.com/furanzhang/unity-editor-mcp.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.1
+```
+
+也可以使用 GitHub 地址：
+
+```text
+https://github.com/FRZ5201314/UnityEditorMCP.git?path=/Packages/com.yys.unity-mcp-bridge#v0.6.1
 ```
 
 导入后，Bridge 会在 Editor 加载后自动启动，默认监听：
@@ -22,6 +28,14 @@ http://127.0.0.1:8765
 ```
 
 打开 `Tools > Unity MCP` 编辑器窗口，可以查看监听地址、启停 Bridge 和切换 Permissions 开关。
+
+## 本地开发导入
+
+如果正在开发本仓库，可以改用 `Add package from disk...` 并选择：
+
+```text
+<repo-path>\Packages\com.yys.unity-mcp-bridge\package.json
+```
 
 ## 依赖
 

@@ -12,7 +12,7 @@
 ## 当前版本
 
 - Unity 本地 UPM 包：`com.yys.unity-mcp-bridge@0.6.1`
-- MCP Server：`@yys/unity-mcp-server@0.6.0`
+- MCP Server：`@yys/unity-mcp-server@0.6.1`
 - Unity 最低兼容版本：Unity 2019.4 LTS
 - Bridge 默认地址：`http://127.0.0.1:8765`
 
@@ -20,7 +20,7 @@
 
 ### 包结构
 
-- Unity Bridge 已迁移为本地 UPM 包：
+- Unity Bridge 已迁移为 UPM 包，推荐通过 Git URL 安装：
 
 ```text
 Packages/com.yys.unity-mcp-bridge/package.json
@@ -154,13 +154,15 @@ server/
 MCP Server 类型检查：
 
 ```powershell
-rtk npm run typecheck
+cd server
+npm run typecheck
 ```
 
 MCP Server 构建：
 
 ```powershell
-rtk npm run build
+cd server
+npm run build
 ```
 
 检查 Git 状态：

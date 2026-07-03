@@ -1,14 +1,42 @@
 {
   "name": "@yys/unity-mcp-server",
-  "version": "0.6.0",
-  "private": true,
+  "version": "0.6.1",
+  "description": "MCP stdio server for Unity Editor MCP Bridge.",
   "type": "module",
   "bin": {
     "unity-mcp": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FRZ5201314/UnityEditorMCP.git",
+    "directory": "server"
+  },
+  "homepage": "https://github.com/FRZ5201314/UnityEditorMCP#readme",
+  "bugs": {
+    "url": "https://github.com/FRZ5201314/UnityEditorMCP/issues"
+  },
+  "keywords": [
+    "mcp",
+    "unity",
+    "unity-editor",
+    "model-context-protocol"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
