@@ -10,7 +10,7 @@
 - 🔎 MCP Server 自动探测 `8765-8775` 端口范围内的 Unity 工程
 - 🧭 支持多 Unity 工程路由，可自动按工程路径、工程名或运行时选择目标
 - 🧱 覆盖场景、Hierarchy、GameObject、Transform、Component、Asset、Prefab、脚本等常用编辑器操作
-- 🪟 内置 `Tools > Unity MCP` 窗口，可查看状态、日志和权限开关
+- 🛠️ 内置 `Tools > Unity MCP` 窗口，可查看状态、日志和权限开关
 
 ## 📦 版本
 
